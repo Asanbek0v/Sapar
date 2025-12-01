@@ -21,6 +21,9 @@ const Header: FC = () => {
             <Link href="/Контакты" className="hover:text-orange-500">
               Контакты
             </Link>
+            <Link href="/Контакты" className="hover:text-orange-500">
+              Контакты
+            </Link>
           </div>
 
           <div className="flex items-center gap-8">
