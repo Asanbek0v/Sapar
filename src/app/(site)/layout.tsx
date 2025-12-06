@@ -1,4 +1,4 @@
-import LayoutSite from "@/src/componets/layout/LayoutSite";
+import LayoutSite from "@/src/components/layout/LayoutSite";
 import { FC, ReactNode } from "react";
 
 interface ILayoutProps {
@@ -7,5 +7,4 @@ interface ILayoutProps {
 const layout: FC<ILayoutProps> = ({ children }) => {
   return <LayoutSite>{children}</LayoutSite>;
 };
-
 export default layout;

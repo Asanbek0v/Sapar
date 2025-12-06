@@ -1,5 +1,6 @@
-const page = () => {
-  return <div>HomePAge</div>;
-};
+import LayoutMain from "@/src/components/main/LayoutMain";
 
+const page = () => {
+  return <LayoutMain />;
+};
 export default page;
