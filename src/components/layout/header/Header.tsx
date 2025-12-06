@@ -27,7 +27,7 @@ const Header: FC = () => {
           </Link>
 
           <Link
-            href="/cooperation"
+            href="/cooporation"
             className="hover:text-orange-500  border-orange-500 pb-1"
           >
             О сотрудничество
