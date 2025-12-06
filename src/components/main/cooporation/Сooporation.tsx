@@ -68,6 +68,11 @@ const Cooporation = () => {
                   </Link>
                 </div>
 
+
+
+
+
+
                 <div className="w-12 h-12 bg-white border rounded-full flex items-center justify-center text-blue-500 text-xl">
                   <Link
                     href="https://web.telegram.org/k/#-5038113903"
