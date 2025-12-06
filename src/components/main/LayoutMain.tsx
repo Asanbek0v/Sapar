@@ -6,8 +6,8 @@ const LayoutMain = () => {
   return (
     <div>
       <Hero />
-      <Tours/>
-      <Attraction/>
+      <Tours />
+      <Attraction />
     </div>
   );
 };
