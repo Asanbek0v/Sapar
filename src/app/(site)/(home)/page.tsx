@@ -1,4 +1,4 @@
-import LayoutMain from "@/src/componets/main/LayoutMain";
+import LayoutMain from "@/src/components/main/LayoutMain";
 
 const page = () => {
   return (
@@ -7,5 +7,4 @@ const page = () => {
     </div>
   );
 };
-
 export default page;
