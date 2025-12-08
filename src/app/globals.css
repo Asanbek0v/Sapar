@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 html {
-  scroll-behavior: none;
+  scroll-behavior: smooth;
 }
 .container {
   max-width: 1240px;

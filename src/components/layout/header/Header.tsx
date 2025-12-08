@@ -29,7 +29,7 @@ const Header: FC = () => {
           <Link href="/about" className="hover:text-orange-500 transition">
             О нас
           </Link>
-          <Link href="/contacts" className="hover:text-orange-500 transition">
+          <Link href="#footer" className="hover:text-orange-500 transition">
             Контакты
           </Link>
         </nav>
@@ -51,21 +51,6 @@ const Header: FC = () => {
               <circle cx="11" cy="11" r="8" />
             </svg>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer">
-            <span className="text-[15px]">Ru</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 mt-[1px]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </div>
-
-          {/* Language */}
           <select className="focus:outline-none">
             <option value="ru">Russia</option>
             <option value="en">English</option>
