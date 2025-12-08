@@ -5,7 +5,7 @@ import { FaInstagram, FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 
 const Footer: FC = () => {
   return (
-    <footer className="mt-28 mb-10">
+    <footer id="footer" className="mt-28 mb-10">
       <div className="container mx-auto px-4">
         <div className="flex items-start justify-between gap-10">
           <div className="flex flex-col items-start gap-4">
