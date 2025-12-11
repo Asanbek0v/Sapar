@@ -1,4 +1,3 @@
-import React from "react";
 import Review from "./review/Review";
 import About from "./about/About";
 import Hero from "./hero/Hero";
@@ -12,4 +11,5 @@ const LayoutMain = () => {
     </>
   );
 };
+
 export default LayoutMain;

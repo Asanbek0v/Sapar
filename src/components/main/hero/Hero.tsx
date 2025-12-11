@@ -1,4 +1,5 @@
 "use client";
+
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function Hero() {
@@ -13,8 +14,8 @@ export default function Hero() {
     const offsetX = e.clientX - rect.left - rect.width / 2;
     const offsetY = e.clientY - rect.top - rect.height / 2;
 
-    x.set(offsetX * 0.05);
-    y.set(offsetY * 0.05);
+    x.set(offsetX * 0.15);
+    y.set(offsetY * 0.15);
   };
 
   return (
@@ -37,14 +38,11 @@ export default function Hero() {
         {/* Content */}
         <motion.div
           className="
-          relative z-10 flex flex-col items-start justify-center
-          h-full px-10 text-white
-          mt-[35px] ml-[60px]
-        "
-          style={{
-            x: springX,
-            y: springY,
-          }}
+            relative z-10 flex flex-col items-start justify-center
+            h-full px-10 text-white
+            mt-[35px] ml-[60px]
+          "
+          style={{ x: springX, y: springY }}
         >
           <h1 className="text-5xl font-bold mb-5">
             Туры по <span className="text-orange-500">Кыргызстану</span>

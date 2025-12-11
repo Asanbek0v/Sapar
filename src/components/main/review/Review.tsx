@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
 
-const Review = () => {
+import { FC } from "react";
+
+const Review: FC = () => {
   return (
     <section id="Review" className="py-16 bg-[#F8F8F8] rounded-3xl">
       <div className="container mx-auto px-4">
