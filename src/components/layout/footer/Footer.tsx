@@ -16,11 +16,16 @@ const Footer: FC = () => {
             </h1>
 
             <div className="flex gap-6">
-              <FaTelegramPlane className="text-[#FF6600] text-3xl" />
-              <FaWhatsapp className="text-[#FF6600] text-3xl" />
-              <FaInstagram className="text-[#FF6600] text-3xl" />
+              <a href="https://t.me/asanbek0v15" target="_blank">
+                <FaTelegramPlane className="text-[#FF6600] text-3xl" />
+              </a>
+              <a href="https://wa.me/996704210706" target="_blank">
+                <FaWhatsapp className="text-[#FF6600] text-3xl" />
+              </a>
+              <a href="https://instagram.com/asanbek0v15" target="_blank">
+                <FaInstagram className="text-[#FF6600] text-3xl" />
+              </a>
             </div>
-
             <h2 className="text-black/40 text-[11px] mt-2">
               Sapar.kg 2025. All rights reserved
             </h2>

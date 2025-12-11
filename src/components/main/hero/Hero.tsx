@@ -6,8 +6,8 @@ export default function Hero() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const springX = useSpring(x, { stiffness: 60, damping: 20 });
-  const springY = useSpring(y, { stiffness: 60, damping: 20 });
+  const springX = useSpring(x, { stiffness: 40, damping: 20 });
+  const springY = useSpring(y, { stiffness: 40, damping: 20 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
