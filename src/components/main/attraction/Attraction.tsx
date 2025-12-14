@@ -1,4 +1,4 @@
-import tour1 from "@/src/assets/img/tour1.svg";
+import tour1 from "@/public/file.svg";
 import Image from "next/image";
 
 const Attraction = () => {
@@ -8,12 +8,17 @@ const Attraction = () => {
         <h1>Топ-10 достопримечательностей Кыргызстана</h1>
         <div
           id="default-carousel"
-          className="relative w-full"
+          className="relative w-full bg-stone-200 rounded-2xl"
           data-carousel="slide"
         >
           <div className="relative h-56 overflow-hidden rounded-base md:h-96">
-            <div className="hidden duration-700 ease-in-out" data-carousel-item>
-              <img
+            <div
+              className="hidden duration-700 ease-in-out w-full"
+              data-carousel-item
+            >
+              <Image src={tour1} alt="img" width={100} height={100} />
+              <img src={tour1} alt="img" width={100} height={100} />
+              <Image
                 src={tour1}
                 className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                 alt="img"

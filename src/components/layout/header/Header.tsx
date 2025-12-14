@@ -3,6 +3,7 @@ import { FC } from "react";
 import Headerlogo from "@/src/assets/header.jpg";
 import Image from "next/image";
 import Link from "next/link";
+
 const Header: FC = () => {
   return (
     <header className="py-4 bg-white shadow-sm">
@@ -29,7 +30,7 @@ const Header: FC = () => {
           <Link href="/about" className="hover:text-orange-500 transition">
             О нас
           </Link>
-          <Link href="/contacts" className="hover:text-orange-500 transition">
+          <Link href="#footer" className="hover:text-orange-500 transition">
             Контакты
           </Link>
         </nav>
