@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
 
 export default function Hero() {
   const x = useMotionValue(0);
@@ -9,80 +10,140 @@ export default function Hero() {
   const springX = useSpring(x, { stiffness: 50, damping: 20 });
   const springY = useSpring(y, { stiffness: 50, damping: 20 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left - rect.width / 2;
-    const offsetY = e.clientY - rect.top - rect.height / 2;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [sound, setSound] = useState(false);
+  const [volume, setVolume] = useState(0.6);
 
-    x.set(offsetX * 0.15);
-    y.set(offsetY * 0.15);
+  const handleMove = (
+    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    let clientX = 0,
+      clientY = 0;
+
+    if ("touches" in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    const offsetX = clientX - rect.left - rect.width / 2;
+    const offsetY = clientY - rect.top - rect.height / 2;
+
+    x.set(offsetX * 0.1);
+    y.set(offsetY * 0.1);
+  };
+
+  const togglePause = () => {
+    if (!videoRef.current) return;
+    if (paused) videoRef.current.play();
+    else videoRef.current.pause();
+    setPaused(!paused);
+  };
+
+  const toggleSound = () => {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+    const newSound = !sound;
+    video.muted = !newSound;
+    video.volume = volume;
+    setSound(newSound);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const vol = parseFloat(e.target.value);
+    setVolume(vol);
+    if (videoRef.current) videoRef.current.volume = vol;
   };
 
   return (
-    <div className="w-full h-[90vh] relative overflow-hidden">
-      <div className="absolute inset-0" onMouseMove={handleMouseMove}>
-        {/* Background video */}
-        <motion.video
-          src="/video/bg.mp4"
-          autoPlay
-          loop
-          muted
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          style={{
-            x: springX,
-            y: springY,
-            scale: 1.2,
-          }}
+    <div
+      className="relative w-full h-[92vh] overflow-hidden bg-black"
+      onMouseMove={handleMove}
+      onTouchMove={handleMove}
+    >
+      <motion.video
+        ref={videoRef}
+        src="/video/bg1.mp4"
+        autoPlay
+        loop
+        muted={!sound}
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ x: springX, y: springY }}
+        initial={{ scale: 1, opacity: 0 }}
+        animate={{ scale: 1.1, opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      />
+
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-radial from-white/10 via-transparent to-transparent" />
+
+      <button
+        onClick={togglePause}
+        className="absolute z-30 bottom-10 -left-4 md:left-10 bg-black/60 text-white px-4 py-2 rounded-xl hover:bg-black/80 transition"
+      >
+        {paused ? "▶ Play" : "⏸ Pause"}
+      </button>
+
+      <button
+        onClick={toggleSound}
+        className="absolute z-30 bottom-10 left-40 md:left-60 bg-black/60 text-white px-4 py-2 rounded-xl hover:bg-black/80 transition"
+      >
+        {sound ? "🔊 Sound ON" : "🔇 Sound OFF"}
+      </button>
+
+      {sound && (
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={volume}
+          onChange={handleVolumeChange}
+          className="absolute z-30 bottom-10 left-72 md:left-96 w-32 md:w-40"
         />
+      )}
 
-        {/* Content */}
-        <motion.div
-          className="
-            relative z-10 flex flex-col items-start justify-center
-            h-full px-10 text-white
-            mt-[35px] ml-[60px]
-          "
-          style={{ x: springX, y: springY }}
-        >
-          <h1 className="text-5xl font-bold mb-5">
-            Туры по <span className="text-orange-500">Кыргызстану</span>
-          </h1>
+      <div className="relative z-20 flex flex-col justify-center h-full px-4 md:px-14 text-white">
+        <h1 className="text-4xl md:text-5xl font-extrabold leading-tight drop-shadow-2xl">
+          Путешествуй по <span className="text-orange-400">Кыргызстану</span>
+        </h1>
 
-          <p className="text-xl my-5">
-            Лучше один раз увидеть, <br /> чем сто раз мечтать
-          </p>
+        <p className="text-lg md:text-xl mt-5 opacity-90 max-w-xl">
+          Горные тропы, чистый воздух и незабываемые приключения.
+        </p>
 
-          {/* Search Bar */}
-          <motion.div className="flex bg-white rounded-full overflow-hidden shadow-lg">
-            <select className="h-full px-4 py-3 text-black outline-none border-r">
-              <option>Бишкек</option>
-              <option>Ош</option>
-              <option>Нарын</option>
-              <option>Талас</option>
+        <div className="mt-10 w-full md:w-[650px] bg-white/10 border border-white/20 backdrop-blur-xl rounded-3xl px-4 md:px-8 py-6 shadow-[0_8px_35px_rgba(255,255,255,0.15)] relative z-20">
+          <div className="flex flex-col md:flex-row gap-4 mb-4">
+            <select className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white outline-none">
+              <option className="text-black">Бишкек</option>
+              <option className="text-black">Ош</option>
+              <option className="text-black">Нарын</option>
             </select>
 
             <input
               type="date"
-              className="px-4 py-3 outline-none text-black border-r"
+              className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white outline-none"
             />
+          </div>
 
+          <div className="flex flex-col md:flex-row gap-4">
             <input
               type="number"
-              placeholder="5000"
-              className="px-4 py-3 w-24 outline-none text-black border-r"
+              placeholder="Бюджет"
+              className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white placeholder-white/80 outline-none"
             />
 
-            <select className="px-4 py-3 text-black outline-none border-r">
-              <option>Треккинг</option>
-              <option>Offroad</option>
-              <option>Каньонинг</option>
-            </select>
-
-            <button className="bg-orange-500 px-6 py-3 text-white font-medium border-0">
-              Найти тур
+            <button className="relative flex-1 px-5 py-3 rounded-xl font-semibold text-lg bg-orange-500 text-white overflow-hidden shadow-[0_0_20px_rgba(255,165,0,0.4)] hover:shadow-[0_0_35px_rgba(255,165,0,0.7)] transition-all mt-2 md:mt-0">
+              <span className="relative z-10">Найти тур</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] animate-shimmer" />
             </button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </div>
   );
