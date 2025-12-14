@@ -1,14 +1,18 @@
-import Attraction from "./attraction/Attraction";
+import Review from "./review/Review";
+import About from "./about/About";
 import Hero from "./hero/Hero";
 import Tours from "./tours/Tours";
+import Attraction from "./attraction/Attraction";
 
 const LayoutMain = () => {
   return (
-    <div>
+    <>
       <Hero />
-      <Tours />
       <Attraction />
-    </div>
+      <Tours />
+      <About />
+      <Review />
+    </>
   );
 };
 

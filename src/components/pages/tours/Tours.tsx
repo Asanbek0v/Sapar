@@ -16,7 +16,6 @@ export default function TourPage() {
     group: true,
     individual: false,
   });
-
   const tours = [
     {
       id: 1,
@@ -75,7 +74,6 @@ export default function TourPage() {
 
   return (
     <div className="w-full">
-      {/* HERO */}
       <section
         className="w-full h-[380px] bg-cover bg-center flex items-center relative"
         style={{ backgroundImage: `url(${bgTour.src})` }}
@@ -90,7 +88,6 @@ export default function TourPage() {
       </section>
 
       <div className="flex container mx-auto px-4 py-10 gap-6">
-        {/* FILTER */}
         <aside className="w-[260px] bg-white shadow p-5 rounded-xl h-fit">
           <h2 className="text-lg font-semibold mb-3">Фильтрация Туров</h2>
 
@@ -116,8 +113,6 @@ export default function TourPage() {
               ${priceRange[0]} - ${priceRange[1]}
             </p>
           </div>
-
-          {/* DAYS */}
           <p className="font-medium mb-2">Туры</p>
           <div className="flex flex-col gap-2 mb-4">
             {["3-5", "7-10", "15-20"].map((d) => (
@@ -135,7 +130,6 @@ export default function TourPage() {
             ))}
           </div>
 
-          {/* GROUP TYPE */}
           <label className="flex items-center gap-2 mb-3">
             <input
               type="checkbox"
@@ -194,7 +188,10 @@ export default function TourPage() {
                       Маршрут: {t.route}
                     </p>
                     <div className="flex items-center justify-between mt-4">
-                      <button className="bg-orange-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-orange-600">
+                      <button
+                        className="bg-orange-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-orange-600"
+                        onClick={() => router.push("/tours/tourDetail")}
+                      >
                         Подробнее
                       </button>
                       <span className="font-semibold">от ${t.price}</span>
