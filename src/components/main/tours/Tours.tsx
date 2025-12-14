@@ -1,11 +1,14 @@
+"use client"
 import tour1 from "@/src/assets/img/tour1.svg";
 import tour2 from "@/src/assets/img/tour2.svg";
 import tour3 from "@/src/assets/img/tour3.svg";
 import tour4 from "@/src/assets/img/tour4.svg";
 import tour5 from "@/src/assets/img/tour5.svg";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Tours = () => {
+  const router = useRouter();
   return (
     <section className="tours m-[50px_0]">
       <div className="container">
@@ -13,7 +16,7 @@ const Tours = () => {
           Выберите свой <br /> <span>тур</span>
         </h1>
         <div className="flex relative gap-3">
-          <div className="w-[760px] h-[500px] relative">
+          <div className="w-[760px] h-[500px] relative" onClick={() => router.push("/tours")}>
             <div className="bg-[#0000004c] w-full h-[540px] absolute top-0 left-0 rounded-4xl"></div>
             <Image
               className="w-full z-10"
@@ -27,28 +30,28 @@ const Tours = () => {
             </h1>
           </div>
           <div className="flex flex-wrap gap-[15px]">
-            <div className="w-[395px] relative">
+            <div className="w-[395px] relative" onClick={() => router.push("/tours")}>
               <div className="bg-[#0000004c] w-full h-full absolute top-0 left-0 rounded-4xl"></div>
               <Image className="w-full" src={tour2} alt="img" />
               <h1 className="absolute bottom-2.5 text-xl text-white font-bold left-25">
                 Культурные туры
               </h1>
             </div>
-            <div className="w-[395px] relative">
+            <div className="w-[395px] relative" onClick={() => router.push("/tours")}>
               <div className="bg-[#0000004c] w-full h-full absolute top-0 left-0 rounded-4xl"></div>
               <Image src={tour3} alt="img" />
               <h1 className="absolute bottom-2.5 text-xl text-white font-bold left-30">
                 Активные туры
               </h1>
             </div>
-            <div className="w-[395px] relative">
+            <div className="w-[395px] relative" onClick={() => router.push("/tours")}>
               <div className="bg-[#0000004c] w-full h-full absolute top-0 left-0 rounded-4xl"></div>
               <Image src={tour4} alt="img" />
               <h1 className="absolute bottom-2.5 text-xl text-white font-bold left-35">
                 Альпинизм
               </h1>
             </div>
-            <div className="w-[395px] relative">
+            <div className="w-[395px] relative" onClick={() => router.push("/tours")}>
               <div className="bg-[#0000004c] w-full h-full absolute top-0 left-0 rounded-4xl"></div>
               <Image src={tour5} alt="img" />
               <h1 className="absolute bottom-2.5 text-xl text-white font-bold left-30">
