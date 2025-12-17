@@ -1,8 +1,9 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 
 const Review: FC = () => {
+  const router = useRouter();
   return (
     <section id="Review" className="py-16 bg-[#F8F8F8] rounded-3xl">
       <div className="container mx-auto px-4">
@@ -45,7 +46,7 @@ const Review: FC = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-center mt-14 gap-6">
-          <button className="px-8 py-2 rounded-2xl border-2 border-orange-500 text-orange-500 text-lg font-semibold hover:bg-orange-500 hover:text-white transition">
+          <button className="px-8 py-2 rounded-2xl border-2 border-orange-500 text-orange-500 text-lg font-semibold hover:bg-orange-500 hover:text-white transition" onClick={() => router.push("/review")}>
             Оставить свой отзыв
           </button>
         </div>
