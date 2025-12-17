@@ -19,6 +19,7 @@ h3,
 h4,
 h5,
 h6,
+a,
 button {
 	cursor: pointer;
 }
@@ -30,6 +31,22 @@ li {
 a {
 	text-decoration: none;
 }
-/* h6 {
-  color: #ff6600;
-} */
+
+input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: #f97316;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  height: 16px;
+  width: 16px;
+  background: #f97316;
+  border-radius: 9999px;
+  cursor: pointer;
+}

@@ -102,9 +102,9 @@ export default function TourDetail() {
   }, []);
 
   return (
-    <div className="mt-28 mb-10 relative">
-      <div className="container">
-        <div className="text-sm text-gray-500 mb-6 flex gap-1">
+    <div className="pt-36 min-h-screen bg-gradient-to-br from-white to-[#ff6600] flex items-center justify-center  p-40 relative overflow-hidden">
+      <div className=" mb-10 relative container mx-auto px-4 mt-28  ">
+        <div className="text-sm text-gray-500 mb-6 flex gap-1 flex-wrap">
           <span
             className="cursor-pointer hover:underline"
             onClick={() => router.push("/")}
@@ -113,7 +113,7 @@ export default function TourDetail() {
           </span>
           /{" "}
           <span
-            className="cursor-pointer hover:underline"
+            className="cursor-pointer hover:underline "
             onClick={() => router.push("/tours")}
           >
             Туры
@@ -126,7 +126,10 @@ export default function TourDetail() {
             key={el.id}
             className="flex gap-10 justify-between items-start flex-wrap"
           >
-            <div className="max-w-[600px]">
+            <motion.div
+              className="max-w-[600px] w-full"
+              whileHover={{ scale: 1.03 }}
+            >
               <Image
                 src={el.url}
                 alt={el.title}
@@ -134,75 +137,87 @@ export default function TourDetail() {
                 height={400}
                 className="rounded-xl shadow-md"
               />
-              <div className="flex justify-between mt-5">
+              <div className="flex justify-between mt-5 gap-3">
                 {[1, 2, 3].map((_, index) => (
-                  <Image
-                    key={index}
-                    src={el.url}
-                    alt={el.title}
-                    width={180}
-                    height={130}
-                    className="rounded-lg border hover:scale-105 transition cursor-pointer"
-                  />
+                  <motion.div key={index} whileHover={{ scale: 1.05 }}>
+                    <Image
+                      src={el.url}
+                      alt={el.title}
+                      width={180}
+                      height={130}
+                      className="rounded-lg border shadow-sm cursor-pointer transition-all"
+                    />
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col max-w-[400px] gap-4">
+            <div className="flex flex-col max-w-[400px] gap-6 w-full">
               <h1 className="text-3xl font-bold">{el.title}</h1>
               <p className="text-gray-700 leading-relaxed">{el.description}</p>
 
-              <div className="mt-5">
-                <h2 className="text-xl font-semibold mb-2">Турагентство</h2>
-                <div className="flex items-center gap-8 bg-white shadow p-3 rounded-xl">
-                  <Image
-                    src={touragent}
-                    alt="tour agent"
-                    width={80}
-                    height={80}
-                    className="rounded-md"
-                  />
-                  <div>
-                    <p className="font-semibold">Master Tour</p>
-                    <p className="inline-flex items-center justify-center gap-2 bg-[#ff6600] text-white text-sm rounded px-2 py-[2px] my-1">
-                      <SlLike className="text-white" size={15} />
-                      {Math.round(rewiew)}/10
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      Бишкек, Киевская улица, д. 112
-                    </p>
-                  </div>
+              <motion.div
+                whileHover={{
+                  y: -3,
+                  boxShadow: "0px 15px 35px rgba(255,165,0,0.3)",
+                }}
+                className="mt-5 flex items-center gap-6 bg-white shadow-md p-3 rounded-xl transition-all"
+              >
+                <Image
+                  src={touragent}
+                  alt="tour agent"
+                  width={80}
+                  height={80}
+                  className="rounded-md"
+                />
+                <div>
+                  <p className="font-semibold">Master Tour</p>
+                  <p className="inline-flex items-center justify-center gap-2 bg-[#ff6600] text-white text-sm rounded px-2 py-[2px] my-1">
+                    <SlLike className="text-white" size={15} />
+                    {Math.round(rewiew)}/10
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Бишкек, Киевская улица, д. 112
+                  </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         ))}
 
-        <div className="flex justify-between items-center mt-20 flex-wrap gap-4">
+        <div className="flex justify-between items-center mt-20 flex-wrap gap-6">
           {tourFeatures.map((item) => (
-            <div key={item.id} className="flex items-center gap-5">
-              <Image src={item.icon} alt="logo" width={45} height={42} />
+            <motion.div
+              key={item.id}
+              whileHover={{
+                y: -3,
+                boxShadow: "0px 10px 25px rgba(255,165,0,0.3)",
+              }}
+              className="flex items-center gap-5 p-3 rounded-xl transition-all bg-white/40 border border-white/10 backdrop-blur-md"
+            >
+              <Image src={item.icon} alt="icon" width={45} height={42} />
               <div>
                 <p className="text-gray-500 text-sm">{item.label}:</p>
                 <p className="font-semibold text-[#ff6600]">{item.value}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <div className="flex flex-col items-center mt-28">
-          <h1 className="text-[30px] text-center">
+        <div className="flex flex-col items-center mt-28 w-full">
+          <h1 className="text-[30px] text-center font-bold">
             Программа <br /> тура
           </h1>
-          <div className="max-w-3xl mx-auto mt-10 flex flex-col gap-6">
+          <div className="max-w-3xl mx-auto mt-10 flex flex-col gap-6 w-full">
             {programTour.map((el, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white"
+                className="border border-gray-200 rounded-xl overflow-hidden bg-white"
+                whileHover={{ scale: 1.01 }}
               >
                 <button
                   onClick={() => toggle(index)}
-                  className="w-full flex justify-between items-center px-20 py-4 hover:bg-gray-50 transition"
+                  className="w-full flex justify-between items-center px-6 py-4 hover:bg-orange-50 transition-colors rounded-lg"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-gray-500 text-base">{el.day}</span>
@@ -233,18 +248,14 @@ export default function TourDetail() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         <div
           id="booking-button"
-          className="
-    w-full flex justify-center z-50 fixed 
-    left-1/2 
-    transition-all duration-300
-  "
+          className="w-full flex justify-center z-50 fixed left-1/2 transition-all duration-300"
           style={{
             bottom: 40,
             opacity: showButton ? 1 : 0,
@@ -254,9 +265,16 @@ export default function TourDetail() {
               : "translate(-50%, 20px)",
           }}
         >
-          <button className="px-12 py-4 bg-orange-500 text-white rounded-lg text-[15px] hover:bg-orange-600">
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 0px 25px rgba(255,165,0,0.5)",
+            }}
+            className="px-12 py-4 bg-orange-500 text-white rounded-lg text-[15px] hover:bg-orange-600 animate-pulse shadow-lg"
+            onClick={() => router.push("/")}
+          >
             Забронировать
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

@@ -8,8 +8,8 @@ const LayoutMain = () => {
   return (
     <>
       <Hero />
-      <Attraction />
       <Tours />
+      <Attraction />
       <About />
       <Review />
     </>

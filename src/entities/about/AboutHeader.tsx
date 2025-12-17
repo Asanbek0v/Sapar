@@ -7,8 +7,8 @@ interface Props {
 export const AboutHeader = ({ data }: Props) => {
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-      <h1 className="text-4xl sm:text-5xl font-bold max-w-lg leading-snug">
-        {data[0]?.title}{" "}
+      <h1 className="text-4xl sm:text-4xl font-bold max-w-lg">
+        {data[0]?.title}{" "} <br />
         <span className="text-[#FF6600]">{data[0]?.subTitle}</span>
       </h1>
 
