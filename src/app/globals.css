@@ -1,20 +1,17 @@
-@import "tailwindcss";
-/* @import "flowbite"; */
+@import 'tailwindcss';
 
 * {
-  /* margin: 0; */
-  /* padding: 0; */
-  font-family: sans-serif;
-  box-sizing: border-box;
+	font-family: sans-serif;
+	box-sizing: border-box;
 }
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 .container {
-  max-width: 1240px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
+	max-width: 1240px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 h1,
 h2,
@@ -23,15 +20,15 @@ h4,
 h5,
 h6,
 button {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 li {
-  list-style: none;
+	list-style: none;
 }
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 }
 /* h6 {
   color: #ff6600;

@@ -52,7 +52,7 @@ const Review = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-white to-[#ff6600] py-20 px-4 relative overflow-hidden">
+    <section className="min-h-screen bg-gradient-to-br from-white to-[#ff6600] pt-40 pb-15 px-4 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
         <div
