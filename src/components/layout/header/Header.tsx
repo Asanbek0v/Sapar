@@ -44,6 +44,9 @@ const Header: FC = () => {
           <a onClick={() => router.push("/about")} className="hover:text-orange-500 transition">
             О нас
           </a>
+          <a onClick={() => router.push("/contacts")} className="hover:text-orange-500 transition">
+            Контакты
+          </a>
         </nav>
 
         <div className="flex items-center gap-6">

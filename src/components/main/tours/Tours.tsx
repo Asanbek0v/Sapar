@@ -38,7 +38,7 @@ const Tours = () => {
           <div className="flex flex-wrap gap-[15px]">
             <div
               onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-[240px] overflow-hidden rounded-4xl cursor-pointer group"
+              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
 
@@ -56,7 +56,7 @@ const Tours = () => {
 
             <div
               onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-[240px] overflow-hidden rounded-4xl cursor-pointer group"
+              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
 
@@ -74,7 +74,7 @@ const Tours = () => {
 
             <div
               onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-[240px] overflow-hidden rounded-4xl cursor-pointer group"
+              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
 
@@ -92,7 +92,7 @@ const Tours = () => {
 
             <div
               onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-[240px] overflow-hidden rounded-4xl cursor-pointer group"
+              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
 

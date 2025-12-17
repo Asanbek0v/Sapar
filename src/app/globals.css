@@ -35,3 +35,21 @@ a {
   text-decoration: none;
 }
 
+input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: #f97316;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  height: 16px;
+  width: 16px;
+  background: #f97316;
+  border-radius: 9999px;
+  cursor: pointer;
+}
