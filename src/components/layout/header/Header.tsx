@@ -28,7 +28,7 @@ const Header: FC = () => {
             src={Headerlogo}
             alt="sapar.kg"
             width={50}
-            className="cursor-pointer rounded-md"
+            className="cursor-pointer rounded-full"
             onClick={() => router.push("/")}
           />
 
