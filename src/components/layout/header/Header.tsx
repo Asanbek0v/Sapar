@@ -39,9 +39,6 @@ const Header: FC = () => {
             <Link href="/companies" className="hover:text-orange-500">
               Компании
             </Link>
-            <Link href="/carDetail" className="hover:text-orange-500">
-              CarDetails
-            </Link>
             <Link href="/cooporation" className="hover:text-orange-500">
               О сотрудничество
             </Link>
@@ -71,10 +68,6 @@ const Header: FC = () => {
               <option>RU</option>
               <option>EN</option>
             </select>
-
-            <button className="hidden lg:block px-5 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
-              Войти
-            </button>
 
             <button onClick={toggleTheme}>
               {isDark ? (
