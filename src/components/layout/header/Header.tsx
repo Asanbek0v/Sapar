@@ -72,10 +72,6 @@ const Header: FC = () => {
               <option>EN</option>
             </select>
 
-            <button className="hidden lg:block px-5 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
-              Войти
-            </button>
-
             <button onClick={toggleTheme}>
               {isDark ? (
                 <Moon className="w-5 h-5" />
@@ -94,10 +90,7 @@ const Header: FC = () => {
           </div>
 
           {/* BURGER (mobile only) */}
-          <button
-            className="lg:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+          <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
