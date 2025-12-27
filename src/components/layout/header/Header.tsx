@@ -39,6 +39,9 @@ const Header: FC = () => {
             <Link href="/companies" className="hover:text-orange-500">
               Компании
             </Link>
+            <Link href="/carDetail" className="hover:text-orange-500">
+              CarDetails
+            </Link>
             <Link href="/cooporation" className="hover:text-orange-500">
               О сотрудничество
             </Link>
@@ -87,10 +90,7 @@ const Header: FC = () => {
           </div>
 
           {/* BURGER (mobile only) */}
-          <button
-            className="lg:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+          <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
