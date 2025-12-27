@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import ReduxProvider from "../providers/ReduxProvider";
+import ReduxProvider from "../provider/ReduxProvider";
 
 interface ILoyautClientProps {
   children: ReactNode;
