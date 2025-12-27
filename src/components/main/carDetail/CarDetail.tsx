@@ -5,20 +5,132 @@ import car1 from "@/src/assets/car1.png";
 import car2 from "@/src/assets/car2.png";
 import car3 from "@/src/assets/car3.png";
 import car4 from "@/src/assets/car4.png";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const CarDetail = () => {
   const [activeTab, setActiveTab] = useState("Характеристики");
   const [mainImgIndex, setMainImgIndex] = useState(0);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [delivery, setDelivery] = useState(false);
+  const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const images = [car1, car2, car3, car4];
   const tabs = ["Характеристики", "Описание", "Условия проката", "Отзывы"];
+  const [reviews, setReviews] = useState([
+    {
+      name: "Алексей М.",
+      rating: 5,
+      text: "Отличная машина! Все прошло гладко, рекомендую!",
+    },
+    {
+      name: "Мария К.",
+      rating: 5,
+      text: "Очень довольны сервисом. Машина в идеальном состоянии.",
+    },
+    {
+      name: "Дмитрий С.",
+      rating: 4,
+      text: "Хорошая цена и качество. Обязательно вернёмся снова.",
+    },
+  ]);
 
-  const rentCar = () => {
-    alert("Заявка успешно отправлена!");
+  const [reviewName, setReviewName] = useState("");
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
+
+  const sendBookingToTelegram = async () => {
+    if (!name || !phone || !startDate || !endDate) {
+      toast.error("Заполните все обязательные поля");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const token = "8598838314:AAH2i5jkdQLUqGO42hr55zBZOcJP9tzeL-U";
+      const chat_id = "@Sapar_kg";
+      const api_url = `https://api.telegram.org/bot${token}/sendMessage`;
+      const message = `
+🚗 <b>Новая бронь авто</b>
+
+<b>Авто:</b> Toyota RAV4 2023
+<b>Имя:</b> ${name}
+<b>Телефон:</b> ${phone}
+<b>Дата начала:</b> ${startDate}
+<b>Дата окончания:</b> ${endDate}
+<b>Доставка:</b> ${delivery ? "Да" : "Нет"}
+${delivery ? `<b>Адрес:</b> ${address}` : ""}
+`;
+
+      await axios.post(api_url, {
+        chat_id,
+        text: message,
+        parse_mode: "HTML",
+      });
+
+      toast.success("Заявка отправлена! Мы свяжемся с вами.");
+
+      setName("");
+      setPhone("");
+      setStartDate("");
+      setEndDate("");
+      setDelivery(false);
+      setAddress("");
+    } catch (error) {
+      toast.error("Ошибка отправки");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+
+    if (!digits.startsWith("996")) {
+      return "+996";
+    }
+
+    return (
+      "+996 " +
+      digits.slice(3, 6) +
+      " " +
+      digits.slice(6, 9) +
+      " " +
+      digits.slice(9, 12)
+    ).trim();
+  };
+  if (!formatPhone(phone)) {
+    toast.error("Введите номер в формате +996XXXXXXXXX");
+    return;
+  }
+  const addReview = () => {
+    if (!reviewName || !reviewText || reviewRating === 0) {
+      toast.error("Заполните имя, отзыв и рейтинг");
+      return;
+    }
+
+    setReviews([
+      ...reviews,
+      {
+        name: reviewName,
+        rating: reviewRating,
+        text: reviewText,
+      },
+    ]);
+
+    setReviewName("");
+    setReviewText("");
+    setReviewRating(0);
+
+    toast.success("Отзыв добавлен");
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-12 pl-25 ">
+    <section className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-28 pl-25 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
           <div className="lg:col-span-5">
@@ -185,84 +297,102 @@ const CarDetail = () => {
               </p>
             </div>
           </div>
+          <div className="lg:col-span-3">
+            <div className="sticky top-6 bg-white rounded-2xl shadow-xl border border-gray-100 p-6 pb-8">
+              <h3 className="text-2xl font-bold mb-5 text-gray-900">
+                Забронировать
+              </h3>
 
-       <div className="lg:col-span-3">
-  <div className="sticky top-6 bg-white rounded-2xl shadow-xl border border-gray-100 p-6 flex flex-col h-full">
-    <h3 className="text-2xl font-bold mb-6 text-gray-900">
-      Забронировать
-    </h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Ваше имя
+                  </label>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Введите имя"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300
+          focus:border-red-500 focus:ring-2 focus:ring-red-200
+          outline-none transition-all"
+                  />
+                </div>
 
-    <div className="space-y-4 flex-1">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Ваше имя
-        </label>
-        <input
-          type="text"
-          placeholder="Введите имя"
-          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all"
-        />
-      </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Телефон
+                  </label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(formatPhone(e.target.value))}
+                    placeholder="+996 XXX XXX XXX"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300
+          focus:border-red-500 focus:ring-2 focus:ring-red-200
+          outline-none transition-all"
+                  />
+                </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Телефон
-        </label>
-        <input
-          type="tel"
-          placeholder="+996 XXX XXX XXX"
-          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all"
-        />
-      </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Дата начала
+                  </label>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300
+          focus:border-red-500 focus:ring-2 focus:ring-red-200
+          outline-none transition-all"
+                  />
+                </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Дата начала
-        </label>
-        <input
-          type="date"
-          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all"
-        />
-      </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Дата окончания
+                  </label>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300
+          focus:border-red-500 focus:ring-2 focus:ring-red-200
+          outline-none transition-all"
+                  />
+                </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Дата окончания
-        </label>
-        <input
-          type="date"
-          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all"
-        />
-      </div>
-
-      <label className="flex items-center gap-3 cursor-pointer">
-        <input
-          type="checkbox"
-          className="w-5 h-5 text-red-500 rounded border-gray-300 focus:ring-red-500"
-        />
-        <span className="text-sm text-gray-700">
-          Доставка по адресу
-        </span>
-      </label>
-
-      <div>
-        <input
-          type="text"
-          placeholder="Адрес доставки"
-          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all"
-        />
-      </div>
-    </div>
-
-    <button
-      onClick={rentCar}
-      className="mt-auto w-full bg-gradient-to-r from-red-500 to-orange-500 text-white py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-    >
-      Забронировать сейчас
-    </button>
-  </div>
-</div>
-
+                <label className="flex items-center gap-3 cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    checked={delivery}
+                    onChange={(e) => setDelivery(e.target.checked)}
+                    className="w-5 h-5 text-red-500 rounded border-gray-300 focus:ring-red-500"
+                  />
+                  <span className="text-sm text-gray-700">
+                    Доставка по адресу
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Адрес доставки"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300
+        focus:border-red-500 focus:ring-2 focus:ring-red-200
+        outline-none transition-all"
+                />
+              </div>
+              <button
+                onClick={sendBookingToTelegram}
+                disabled={loading}
+                className="mt-5 w-full bg-gradient-to-r from-red-500 to-orange-500
+  text-white py-4 rounded-xl text-lg font-semibold
+  shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+              >
+                {loading ? "Отправка..." : "Забронировать сейчас"}
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -399,7 +529,6 @@ const CarDetail = () => {
                   </div>
                 </div>
               )}
-
               {activeTab === "Условия проката" && (
                 <div>
                   <h4 className="text-2xl font-bold mb-6 text-gray-900">
@@ -430,43 +559,31 @@ const CarDetail = () => {
                   </div>
                 </div>
               )}
-
               {activeTab === "Отзывы" && (
                 <div>
                   <h4 className="text-2xl font-bold mb-6 text-gray-900">
                     Отзывы клиентов
                   </h4>
-                  <div className="space-y-4">
-                    {[
-                      {
-                        name: "Алексей М.",
-                        rating: 5,
-                        text: "Отличная машина! Все прошло гладко, рекомендую!",
-                      },
-                      {
-                        name: "Мария К.",
-                        rating: 5,
-                        text: "Очень довольны сервисом. Машина в идеальном состоянии.",
-                      },
-                      {
-                        name: "Дмитрий С.",
-                        rating: 4,
-                        text: "Хорошая цена и качество. Обязательно вернёмся снова.",
-                      },
-                    ].map((review, i) => (
+
+                  <div className="space-y-4 mb-10">
+                    {reviews.map((review, i) => (
                       <div
                         key={i}
                         className="bg-white rounded-xl p-6 border border-gray-200"
                       >
-                        <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-gray-900">
                             {review.name}
                           </h5>
                           <div className="flex gap-1">
-                            {[...Array(review.rating)].map((_, j) => (
+                            {[...Array(5)].map((_, j) => (
                               <svg
                                 key={j}
-                                className="w-4 h-4 text-yellow-500"
+                                className={`w-4 h-4 ${
+                                  j < review.rating
+                                    ? "text-yellow-500"
+                                    : "text-gray-300"
+                                }`}
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -478,6 +595,48 @@ const CarDetail = () => {
                         <p className="text-gray-600">{review.text}</p>
                       </div>
                     ))}
+                  </div>
+
+                  {/* ФОРМА ОТЗЫВА */}
+                  <h4 className="text-2xl font-bold mb-4 text-gray-900">
+                    Оставьте отзыв об автомобиле
+                  </h4>
+
+                  <div className="bg-white rounded-xl p-6 border border-gray-200 space-y-4 max-w-xl">
+                    <input
+                      type="text"
+                      placeholder="Ваше имя"
+                      value={reviewName}
+                      onChange={(e) => setReviewName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-200 outline-none"
+                    />
+
+                    <textarea
+                      placeholder="Ваш отзыв"
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-200 outline-none"
+                    />
+
+                    <div className="flex items-center gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          onClick={() => setReviewRating(star)}
+                          className="text-2xl"
+                        >
+                          {star <= reviewRating ? "⭐" : "☆"}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={addReview}
+                      className="px-6 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
+                    >
+                      Отправить отзыв
+                    </button>
                   </div>
                 </div>
               )}
