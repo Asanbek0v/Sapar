@@ -1,18 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Star, Send, User } from "lucide-react";
+import { useGetTodosQuery } from "@/src/redux/api/todo";
 
-const Review = () => {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      name: "Nursultan",
-      rating: 5,
-      text: "Отличный сервис! Очень доволен качеством. Нурсултан прям лучший гид которого когда-либо встречал!",
-      date: new Date().toLocaleDateString(),
-    },
-  ]);
+interface ITodo {
+  id: number;
+  UserID: string;
+  rating: number;
+  commet: string;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+}
+interface IReviewUI {
+  id: number;
+  name: string;
+  rating: number;
+  text: string;
+  date: string;
+}
+
+const Review: FC = () => {
+  const { data, isLoading, isError } = useGetTodosQuery();
+  const reviews: IReviewUI[] =
+    data?.data?.map((el: ITodo) => ({
+      id: el.id,
+      name: el.UserID || "UserName",
+      rating: el.rating,
+      text: el.commet,
+      date: new Date(el.createdAt).toLocaleDateString(),
+    })) ?? [];
 
   const [formData, setFormData] = useState({
     name: "",
