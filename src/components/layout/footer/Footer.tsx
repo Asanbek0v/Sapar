@@ -82,7 +82,7 @@ const Footer: FC = () => {
               src={footerlogo}
               alt="logo"
               width={70}
-              className="mx-auto sm:mx-0"
+              className="mx-auto sm:mx-0 "
             />
 
             <h1 className="text-gray-500 font-medium text-[18px]">
