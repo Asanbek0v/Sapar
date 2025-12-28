@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import img from "next/img";
 import bgTour from "@/src/assets/img/bg-tour.svg";
 import car1 from "@/src/assets/img/car1.svg";
 import car2 from "@/src/assets/img/car2.svg";
@@ -12,11 +12,11 @@ import { getTours } from "@/src/services/tours.service";
 type Tour = {
   id: number;
   days: string;
-  title: string;
+  name: string;
   available: boolean;
   route: string;
   price: number;
-  img: string;
+  imgs: string;
 };
 
 const carsData = [
@@ -31,7 +31,7 @@ export default function TourPage() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [tours, setTours] = useState<Tour[]>([]);
   console.log(tours);
-  
+
   useEffect(() => {
     getTours().then(setTours);
   }, []);
@@ -44,7 +44,7 @@ export default function TourPage() {
     <div className="w-full">
       <section
         className="w-full h-[260px] sm:h-80 lg:h-[380px] bg-cover bg-center flex items-center relative"
-        style={{ backgroundImage: `url(${bgTour.src})` }}
+        style={{ backgroundimg: `url(${bgTour.src})` }}
       >
         <div className="container mx-auto px-4 text-white z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
@@ -103,18 +103,19 @@ export default function TourPage() {
                   onClick={() => router.push(`/toursData/${t.id}`)}
                 >
                   <div className="relative h-44">
-                    <Image
-                      src={t.img || ""}
-                      alt={t.title}
+                    <img
+                      src={t.images?.[0] || "/placeholder.jpg"}
+                      alt={t.name}
                       fill
                       className="object-cover"
                     />
+
                     <span className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
                       {t.days}
                     </span>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-bold">{t.title}</h3>
+                    <h3 className="font-bold">{t.name}</h3>
                     <p className="text-sm text-gray-600 line-clamp-2">
                       {t.route}
                     </p>
@@ -142,7 +143,7 @@ export default function TourPage() {
                   className="text-center cursor-pointer bg-white shadow rounded-xl p-4"
                 >
                   <div className="relative h-40 mb-3">
-                    <Image
+                    <img
                       src={c.img}
                       alt={c.name}
                       fill
