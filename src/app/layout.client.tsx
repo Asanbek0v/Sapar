@@ -1,13 +1,19 @@
+"use client";
+
 import { ReactNode } from "react";
 import ReduxProvider from "../provider/ReduxProvider";
+import ThemeProvider from "../provider/ThemeProvider";
 
-interface ILoyautClientProps {
+interface ILayoutClientProps {
   children: ReactNode;
 }
 
-const LoyautClient: React.FC<ILoyautClientProps> = ({ children }) => {
-  return <ReduxProvider>{children}</ReduxProvider>;
+const LayoutClient: React.FC<ILayoutClientProps> = ({ children }) => {
+  return (
+    <ReduxProvider>
+      <ThemeProvider>{children}</ThemeProvider>
+    </ReduxProvider>
+  );
 };
 
-export default LoyautClient;
-
+export default LayoutClient;

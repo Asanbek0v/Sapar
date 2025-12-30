@@ -2,6 +2,8 @@
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Hero() {
   const x = useMotionValue(0);
@@ -15,10 +17,18 @@ export default function Hero() {
   const [sound, setSound] = useState(false);
   const [volume, setVolume] = useState(0.6);
 
+  const [city, setCity] = useState("Бишкек");
+  const [date, setDate] = useState("");
+  const [budget, setBudget] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+
   const handleMove = (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) => {
-    if (window.innerWidth < 768) return; // 📱 mobile off
+    if (window.innerWidth < 768) return;
 
     const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
     const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
@@ -49,6 +59,101 @@ export default function Hero() {
     if (videoRef.current) videoRef.current.volume = vol;
   };
 
+  const searchTour = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.get(
+        "https://tourism-backend-laq8.onrender.com/ru/api/v1/tours"
+      );
+
+      const tours =
+        response.data?.data || response.data?.tours || response.data;
+
+      console.log("=== DEBUGGING ===");
+      console.log("Жалпы турлар:", tours.length);
+      console.log("Тандалган шаар/област:", city);
+
+      if (tours && tours.length > 0) {
+        let filteredTours = tours;
+
+        if (city) {
+          filteredTours = filteredTours.filter((tour: any) => {
+            if (tour.city === city) return true;
+
+            if (tour.city.includes(city)) return true;
+
+            if (city.includes(tour.city)) return true;
+
+            const regionMap: { [key: string]: string[] } = {
+              "Иссык-Куль": ["Каракол", "Чолпон-Ата", "Иссык-Куль"],
+              Нарын: ["Нарын", "Ат-Башы"],
+              Ош: ["Ош", "Узген"],
+              Бишкек: ["Бишкек", "Кара-Балта"],
+            };
+
+            const relatedCities = regionMap[city] || [];
+            if (relatedCities.includes(tour.city)) return true;
+
+            return false;
+          });
+
+          console.log(
+            `City/Oblast фильтринен кийин: ${filteredTours.length} тур`
+          );
+        }
+
+        if (date && filteredTours.length > 0) {
+          filteredTours = filteredTours.filter(
+            (tour: any) => tour.date === date
+          );
+          console.log(`Date фильтринен кийин: ${filteredTours.length} тур`);
+        }
+
+        if (budget && filteredTours.length > 0) {
+          filteredTours = filteredTours.filter(
+            (tour: any) => tour.price <= Number(budget)
+          );
+          console.log(`Budget фильтринен кийин: ${filteredTours.length} тур`);
+        }
+
+        console.log("Акыркы натыйжа:", filteredTours.length, "тур");
+
+        if (filteredTours.length > 0) {
+          localStorage.setItem("searchResults", JSON.stringify(filteredTours));
+          localStorage.setItem(
+            "searchParams",
+            JSON.stringify({ city, date, budget })
+          );
+          router.push("/tours");
+        } else {
+          const availableCities = [...new Set(tours.map((t: any) => t.city))];
+          setError(
+            `"${city}" ${date ? `(${date})` : ""} ${
+              budget ? `бюджет: ${budget} сом` : ""
+            } боюнча турлар табылган жок. Бизде бар турлар: ${availableCities.join(
+              ", "
+            )}`
+          );
+        }
+      } else {
+        setError("API турларды кайтарган жок");
+      }
+    } catch (error) {
+      console.error("Ката:", error);
+      if (axios.isAxiosError(error)) {
+        setError(
+          error.response?.data?.message || "Турларды издөөдө ката кетти"
+        );
+      } else {
+        setError("Турларды издөөдө ката кетти");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div
       className="relative w-full h-[85vh] md:h-[92vh] overflow-hidden bg-black"
@@ -113,16 +218,46 @@ export default function Hero() {
             Горные тропы, чистый воздух и незабываемые приключения.
           </p>
 
-          <div className="mt-8 w-full md:w-[650px] bg-white/10 border border-white/20 backdrop-blur-xl rounded-3xl px-4 md:px-8 py-6 shadow-xl">
+          <form
+            onSubmit={searchTour}
+            className="mt-8 w-full md:w-[650px] bg-white/10 border border-white/20 backdrop-blur-xl rounded-3xl px-4 md:px-8 py-6 shadow-xl"
+          >
             <div className="flex flex-col md:flex-row gap-4 mb-4">
-              <select className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white outline-none">
-                <option className="text-black">Бишкек</option>
-                <option className="text-black">Ош</option>
-                <option className="text-black">Нарын</option>
+              <select
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white outline-none"
+              >
+                <option className="text-black" value="Бишкек">
+                  Бишкек
+                </option>
+                <option className="text-black" value="Ош">
+                  Ош
+                </option>
+                <option className="text-black" value="Нарын">
+                  Нарын
+                </option>
+                <option className="text-black" value="Иссык-Куль">
+                  Иссык-Куль
+                </option>
+                <option className="text-black" value="Баткен">
+                  Баткен
+                </option>{" "}
+                <option className="text-black" value="Талас">
+                  Талас
+                </option>{" "}
+                <option className="text-black" value="Каракол">
+                  Чуй
+                </option>{" "}
+                <option className="text-black" value="Жалал-Абад">
+                  Жалал-Абад
+                </option>
               </select>
 
               <input
                 type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
                 className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white outline-none"
               />
             </div>
@@ -131,14 +266,26 @@ export default function Hero() {
               <input
                 type="number"
                 placeholder="Бюджет"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
                 className="flex-1 bg-white/20 border border-white/30 px-4 py-3 rounded-xl text-white placeholder-white/80 outline-none"
               />
 
-              <button className="flex-1 px-5 py-3 rounded-xl font-semibold text-lg bg-orange-500 hover:bg-orange-600 transition">
-                Найти тур
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 px-5 py-3 rounded-xl font-semibold text-lg bg-orange-500 hover:bg-orange-600 transition disabled:bg-orange-400 disabled:cursor-not-allowed"
+              >
+                {loading ? "Издөө..." : "Найти тур"}
               </button>
             </div>
-          </div>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-xl text-white text-sm">
+                {error}
+              </div>
+            )}
+          </form>
         </div>
       </div>
     </div>
