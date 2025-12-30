@@ -12,11 +12,11 @@ import { getTours } from "@/src/services/tours.service";
 type Tour = {
   id: number;
   days: string;
-  title: string;
+  name: string;
   available: boolean;
   route: string;
   price: number;
-  img: string;
+  images: string[];
 };
 
 const carsData = [
@@ -30,11 +30,11 @@ export default function TourPage() {
   const [groupType, setGroupType] = useState<"group" | "individual">("group");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [tours, setTours] = useState<Tour[]>([]);
-  console.log(tours);
-  
+
   useEffect(() => {
     getTours().then(setTours);
   }, []);
+console.log();
 
   const filteredTours = tours.filter(
     (t) => t.price >= priceRange[0] && t.price <= priceRange[1]
@@ -46,7 +46,7 @@ export default function TourPage() {
         className="w-full h-[260px] sm:h-80 lg:h-[380px] bg-cover bg-center flex items-center relative"
         style={{ backgroundImage: `url(${bgTour.src})` }}
       >
-        <div className="container mx-auto px-4 text-white z-10">
+        <div className="container mx-auto px-4 text-white z-10 relative">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
             ТРЕККИНГ
           </h1>
@@ -100,28 +100,31 @@ export default function TourPage() {
                 <div
                   key={t.id}
                   className="bg-white shadow rounded-xl overflow-hidden cursor-pointer"
-                  onClick={() => router.push(`/toursData/${t.id}`)}
+                  onClick={() => router.push(`/tours/${t.id}`)}
                 >
                   <div className="relative h-44">
-                    <Image
-                      src={t.img || ""}
-                      alt={t.title}
+                    <img
+                      src={t.images?.[0] || "/placeholder.jpg"}
+                      alt={t.name}
                       fill
                       className="object-cover"
                     />
-                    <span className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
+                    <span className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded z-10">
                       {t.days}
                     </span>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-bold">{t.title}</h3>
+                    <h3 className="font-bold">{t.name}</h3>
                     <p className="text-sm text-gray-600 line-clamp-2">
                       {t.route}
                     </p>
                     <div className="flex justify-between items-center mt-4">
                       <button
-                        onClick={() => router.push(`/toursData/${t.id}`)}
-                        className="bg-orange-500 text-white px-4 py-1 rounded"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/tours/${t.id}`);
+                        }}
+                        className="bg-orange-500 text-white px-4 py-1 rounded hover:bg-orange-600 transition"
                       >
                         Подробнее
                       </button>
@@ -139,7 +142,7 @@ export default function TourPage() {
                 <div
                   key={c.id}
                   onClick={() => router.push("/cars")}
-                  className="text-center cursor-pointer bg-white shadow rounded-xl p-4"
+                  className="text-center cursor-pointer bg-white shadow rounded-xl p-4 hover:shadow-lg transition"
                 >
                   <div className="relative h-40 mb-3">
                     <Image
