@@ -7,107 +7,43 @@ import tour5 from "@/src/assets/img/tour5.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+const categories = [
+  { slug: "trekking", title: "Треккинг", img: tour1 },
+  { slug: "culture", title: "Культурные туры", img: tour2 },
+  { slug: "active", title: "Активные туры", img: tour3 },
+  { slug: "alpinism", title: "Альпинизм", img: tour4 },
+  { slug: "ski", title: "Лыжные туры", img: tour5 },
+];
+
 const Tours = () => {
   const router = useRouter();
+
   return (
     <section className="tours m-[50px_0]">
       <div className="container">
-        <h1 className="text-4xl font-bold text-[black]">
-          Выберите свой <br />{" "}
-          <span className="text-4xl font-bold text-orange-500">тур</span>
+        <h1 className="text-4xl font-bold text-black">
+          Выберите свой <br />
+          <span className="text-orange-500">тур</span>
         </h1>
-        <div className="flex relative gap-3 mt-[30px]">
-          <div
-            onClick={() => router.push("/tours")}
-            className="relative w-[760px] h-[500px] overflow-hidden rounded-4xl cursor-pointer group"
-          >
-            <div className="absolute inset-0 bg-black/40 z-10" />
-
-            <Image
-              src={tour1}
-              alt="Треккинг"
-              fill
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            />
-
-            <h1 className="absolute bottom-6 left-30 z-20 text-xl text-white font-bold">
-              Треккинг
-            </h1>
-          </div>
-
-          <div className="flex flex-wrap gap-[15px]">
+        <div className="flex flex-wrap gap-4 mt-6">
+          {categories.map((c) => (
             <div
-              onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
+              key={c.slug}
+              onClick={() => router.push(`/tours/${c.slug}`)}
+              className="relative w-[395px] h-60 overflow-hidden rounded-2xl cursor-pointer group"
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
-
               <Image
-                src={tour2}
-                alt="Культурные туры"
+                src={c.img}
+                alt={c.title}
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
-
-              <h1 className="absolute bottom-4 left-25 z-20 text-xl text-white font-bold">
-                Культурные туры
+              <h1 className="absolute bottom-4 left-6 z-20 text-xl text-white font-bold">
+                {c.title}
               </h1>
             </div>
-
-            <div
-              onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
-            >
-              <div className="absolute inset-0 bg-black/40 z-10" />
-
-              <Image
-                src={tour3}
-                alt="Активные туры"
-                fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              />
-
-              <h1 className="absolute bottom-4 left-25 z-20 text-xl text-white font-bold">
-                Активные туры
-              </h1>
-            </div>
-
-            <div
-              onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
-            >
-              <div className="absolute inset-0 bg-black/40 z-10" />
-
-              <Image
-                src={tour4}
-                alt="Альпинизм"
-                fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              />
-
-              <h1 className="absolute bottom-4 left-30 z-20 text-xl text-white font-bold">
-                Альпинизм
-              </h1>
-            </div>
-
-            <div
-              onClick={() => router.push("/tours")}
-              className="relative w-[395px] h-60 overflow-hidden rounded-4xl cursor-pointer group"
-            >
-              <div className="absolute inset-0 bg-black/40 z-10" />
-
-              <Image
-                src={tour5}
-                alt="Лыжные туры"
-                fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              />
-
-              <h1 className="absolute bottom-4 left-25 z-20 text-xl text-white font-bold">
-                Лыжные туры
-              </h1>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

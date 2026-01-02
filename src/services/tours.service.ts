@@ -1,10 +1,17 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { Tour } from "../types/tour.interface";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const getTours = async () => {
+export const getTours = async (): Promise<Tour[]> => {
   try {
     const { data } = await axios.get(`${API_URL}/tours`);
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      console.error("Ошибка при получении туров:", error.response?.data || error.message);
+    } else {
+      console.error("Неизвестная ошибка при получении туров");
+    }
     return data.tours;
   } catch (error: any) {
     console.error(
@@ -18,13 +25,7 @@ export const getTours = async () => {
 export const getTourById = async (id: string | number) => {
   try {
     const { data } = await axios.get(`${API_URL}/tours/${id}`);
-    console.log("Backend жооп:", data); // эмне келгенин көрөлү
-
-    // Backend кандай форматта жөнөтөт:
-    // Вариант 1: { tour: {...} }
-    // Вариант 2: { tours: {...} }
-    // Вариант 3: {...} (түздөн-түз объект)
-
+    console.log("Backend жооп:", data);
     return data.tour || data.tours || data;
   } catch (error: any) {
     console.error(
@@ -33,9 +34,4 @@ export const getTourById = async (id: string | number) => {
     );
     throw error;
   }
-};
-
-export const getCars = async () => {
-  const { data } = await axios.get(`${API_URL}/cars`);
-  return data;
 };
