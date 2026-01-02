@@ -2,6 +2,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import bgTour from "@/src/assets/img/bg-tour.svg";
 import car1 from "@/src/assets/img/car1.svg";
 import car2 from "@/src/assets/img/car2.svg";
 import car3 from "@/src/assets/img/car3.svg";
@@ -17,6 +20,10 @@ type CarCard = {
   id: number;
   name: string;
   img: string;
+  available: boolean;
+  route: string;
+  price: number;
+  images: string[];
 };
 
 const carsData: CarCard[] = [
@@ -43,6 +50,7 @@ export default function TourPage() {
     };
     fetchTours();
   }, []);
+console.log();
 
   const toursWithUsdPrice = useMemo(() => {
     return tours.map((t) => ({
@@ -59,6 +67,25 @@ export default function TourPage() {
       max: Math.ceil(Math.max(...values)),
     };
   }, [toursWithUsdPrice]);
+  const filteredTours = tours?.filter(
+    (t) => t.price >= priceRange[0] && t.price <= priceRange[1]
+  );
+  return (
+    <div className="w-full">
+      <section
+        className="w-full h-[260px] sm:h-80 lg:h-[380px] bg-cover bg-center flex items-center relative"
+        style={{ backgroundImage: `url(${bgTour.src})` }}
+      >
+        <div className="container mx-auto px-4 text-white z-10 relative">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+            ТРЕККИНГ
+          </h1>
+          <p className="text-base sm:text-lg lg:text-xl max-w-xl">
+            Собери рюкзак — и отправься за новыми историями
+          </p>
+        </div>
+        <div className="absolute inset-0 bg-black/40"></div>
+      </section>
 
   useEffect(() => {
     if (prices.max > 0) setPriceRange([prices.min, prices.max]);
@@ -164,6 +191,40 @@ export default function TourPage() {
                           </span>
                         </div>
                       </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTours?.map((t) => (
+                <div
+                  key={t.id}
+                  className="bg-white shadow rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => router.push(`/tours/${t.id}`)}
+                >
+                  <div className="relative h-44">
+                    <img
+                      src={t.images?.[0] || "/placeholder.jpg"}
+                      alt={t.name}
+                      fill
+                      className="object-cover"
+                    />
+                    <span className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded z-10">
+                      {t.days}
+                    </span>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-bold">{t.name}</h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {t.route}
+                    </p>
+                    <div className="flex justify-between items-center mt-4">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/tours/${t.id}`);
+                        }}
+                        className="bg-orange-500 text-white px-4 py-1 rounded hover:bg-orange-600 transition"
+                      >
+                        Подробнее
+                      </button>
+                      <span className="font-semibold">${t.price}</span>
                     </div>
                   ))}
                 </div>
@@ -177,7 +238,7 @@ export default function TourPage() {
                 <div
                   key={c.id}
                   onClick={() => router.push("/cars")}
-                  className="text-center cursor-pointer bg-white shadow rounded-xl p-4"
+                  className="text-center cursor-pointer bg-white shadow rounded-xl p-4 hover:shadow-lg transition"
                 >
                   <div className="relative h-40 mb-3">
                     <Image

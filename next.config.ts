@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -7,6 +6,7 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+    domains: ["aquarida-tour.kz", "tourism-backend-laq8.onrender.com"],
   },
 };
 
