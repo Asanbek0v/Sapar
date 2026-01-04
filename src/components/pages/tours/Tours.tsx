@@ -36,10 +36,9 @@ export default function TourPage() {
     getTours().then(setTours);
   }, []);
 
-  const filteredTours = tours.filter(
+  const filteredTours = tours?.filter(
     (t) => t.price >= priceRange[0] && t.price <= priceRange[1]
   );
-
   return (
     <div className="w-full">
       <section
@@ -96,7 +95,7 @@ export default function TourPage() {
         <main className="flex-1 mt-4">
           {groupType === "group" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTours.map((t) => (
+              {filteredTours?.map((t) => (
                 <div
                   key={t.id}
                   className="bg-white shadow rounded-xl overflow-hidden cursor-pointer"
