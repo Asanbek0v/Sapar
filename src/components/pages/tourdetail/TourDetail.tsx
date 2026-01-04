@@ -172,7 +172,7 @@ export default function TourDetailPage() {
             onClick={() => router.push("/tours")}
             className="cursor-pointer hover:underline"
           >
-            Туры  
+            Туры
           </span>
           /<span className="text-black font-semibold">{tour.name}</span>
         </div>
