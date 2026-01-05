@@ -176,6 +176,25 @@ export default function TourDetailPage() {
   //         </span>
   //         /<span className="text-black font-semibold">{tour.name}</span>
   //       </div>
+  return (
+    <div className="mt-28 min-h-screen bg-gradient-to-br from-white to-orange-100 p-4 md:p-10">
+      <div className="container mx-auto">
+        <div className="text-sm text-gray-500 mb-6 flex gap-1 flex-wrap">
+          <span
+            onClick={() => router.push("/")}
+            className="cursor-pointer hover:underline"
+          >
+            Дамой
+          </span>
+          /
+          <span
+            onClick={() => router.push("/tours")}
+            className="cursor-pointer hover:underline"
+          >
+            Туры
+          </span>
+          /<span className="text-black font-semibold">{tour.name}</span>
+        </div>
 
   //       <div className="flex flex-col lg:flex-row gap-10 items-start">
   //         <div className="w-full lg:max-w-[600px]">
