@@ -102,10 +102,10 @@ export default function TourDetailPage() {
   useEffect(() => {
     if (!tourId) return;
 
-    getTourById(tourId as string)
-      .then((data) => setTour(data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    // getTourById(tourId as string)
+    //   .then((data) => setTour(data))
+    //   .catch(console.error)
+    //   .finally(() => setLoading(false));
   }, [tourId]);
 
   useEffect(() => {
@@ -157,168 +157,168 @@ export default function TourDetailPage() {
     },
   ];
 
-  return (
-    <div className="mt-28 min-h-screen bg-gradient-to-br from-white to-orange-100 p-4 md:p-10">
-      <div className="container mx-auto">
-        <div className="text-sm text-gray-500 mb-6 flex gap-1 flex-wrap">
-          <span
-            onClick={() => router.push("/")}
-            className="cursor-pointer hover:underline"
-          >
-            Дамой
-          </span>
-          /
-          <span
-            onClick={() => router.push("/tours")}
-            className="cursor-pointer hover:underline"
-          >
-            Туры  
-          </span>
-          /<span className="text-black font-semibold">{tour.name}</span>
-        </div>
+  // return (
+  //   <div className="mt-28 min-h-screen bg-gradient-to-br from-white to-orange-100 p-4 md:p-10">
+  //     <div className="container mx-auto">
+  //       <div className="text-sm text-gray-500 mb-6 flex gap-1 flex-wrap">
+  //         <span
+  //           onClick={() => router.push("/")}
+  //           className="cursor-pointer hover:underline"
+  //         >
+  //           Дамой
+  //         </span>
+  //         /
+  //         <span
+  //           onClick={() => router.push("/tours")}
+  //           className="cursor-pointer hover:underline"
+  //         >
+  //           Туры  
+  //         </span>
+  //         /<span className="text-black font-semibold">{tour.name}</span>
+  //       </div>
 
-        <div className="flex flex-col lg:flex-row gap-10 items-start">
-          <div className="w-full lg:max-w-[600px]">
-            <motion.div whileHover={{ scale: 1.03 }}>
-              <img
-                src={tour.images?.[0] || "/placeholder.jpg"}
-                alt={tour.name}
-                className="rounded-xl shadow-md w-full h-[400px] object-cover"
-              />
-            </motion.div>
+  //       <div className="flex flex-col lg:flex-row gap-10 items-start">
+  //         <div className="w-full lg:max-w-[600px]">
+  //           <motion.div whileHover={{ scale: 1.03 }}>
+  //             <img
+  //               src={tour.images?.[0] || "/placeholder.jpg"}
+  //               alt={tour.name}
+  //               className="rounded-xl shadow-md w-full h-[400px] object-cover"
+  //             />
+  //           </motion.div>
 
-            <div className="flex gap-3 mt-5">
-              {tour.images?.slice(1, 4).map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={tour.name}
-                  className="rounded-lg border shadow-sm cursor-pointer transition-all w-1/3 h-[130px] object-cover"
-                />
-              ))}
-            </div>
-          </div>
+  //           <div className="flex gap-3 mt-5">
+  //             {tour.images?.slice(1, 4).map((img, i) => (
+  //               <img
+  //                 key={i}
+  //                 src={img}
+  //                 alt={tour.name}
+  //                 className="rounded-lg border shadow-sm cursor-pointer transition-all w-1/3 h-[130px] object-cover"
+  //               />
+  //             ))}
+  //           </div>
+  //         </div>
 
-          <div className="flex flex-col max-w-[400px] gap-6 w-full">
-            <h1 className="text-3xl font-bold">{tour.name}</h1>
-            <p className="text-gray-700 leading-relaxed">{tour.route}</p>
+  //         <div className="flex flex-col max-w-[400px] gap-6 w-full">
+  //           <h1 className="text-3xl font-bold">{tour.name}</h1>
+  //           <p className="text-gray-700 leading-relaxed">{tour.route}</p>
 
-            <motion.div
-              whileHover={{
-                y: -3,
-                boxShadow: "0px 15px 35px rgba(255,165,0,0.3)",
-              }}
-              className="flex items-center gap-6 bg-white shadow-md p-3 rounded-xl transition-all"
-            >
-              <Image
-                src={touragent}
-                alt="tour agent"
-                width={80}
-                height={80}
-                className="rounded-md"
-              />
-              <div>
-                <p className="font-semibold">{t.agent.name}</p>
-                <p className="inline-flex items-center gap-2 bg-orange-500 text-white text-sm rounded px-2 py-[2px] my-1">
-                  <SlLike className="text-white" size={15} />{" "}
-                  {Math.round(review)}/10
-                </p>
-                <p className="text-gray-500 text-sm">{t.agent.address}</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+  //           <motion.div
+  //             whileHover={{
+  //               y: -3,
+  //               boxShadow: "0px 15px 35px rgba(255,165,0,0.3)",
+  //             }}
+  //             className="flex items-center gap-6 bg-white shadow-md p-3 rounded-xl transition-all"
+  //           >
+  //             <Image
+  //               src={touragent}
+  //               alt="tour agent"
+  //               width={80}
+  //               height={80}
+  //               className="rounded-md"
+  //             />
+  //             <div>
+  //               <p className="font-semibold">{t.agent.name}</p>
+  //               <p className="inline-flex items-center gap-2 bg-orange-500 text-white text-sm rounded px-2 py-[2px] my-1">
+  //                 <SlLike className="text-white" size={15} />{" "}
+  //                 {Math.round(review)}/10
+  //               </p>
+  //               <p className="text-gray-500 text-sm">{t.agent.address}</p>
+  //             </div>
+  //           </motion.div>
+  //         </div>
+  //       </div>
 
-        <div className="flex flex-wrap justify-between mt-10 gap-4">
-          {features.map((item) => (
-            <motion.div
-              key={item.id}
-              whileHover={{
-                y: -3,
-                boxShadow: "0px 10px 25px rgba(255,165,0,0.3)",
-              }}
-              className="flex items-center gap-5 p-3 rounded-xl transition-all bg-white/40 border border-white/10 backdrop-blur-md flex-1 min-w-[200px]"
-            >
-              <Image src={item.icon} alt="icon" width={45} height={42} />
-              <div>
-                <p className="text-gray-500 text-sm">{item.label}:</p>
-                <p className="font-semibold text-orange-500">{item.value}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+  //       <div className="flex flex-wrap justify-between mt-10 gap-4">
+  //         {features.map((item) => (
+  //           <motion.div
+  //             key={item.id}
+  //             whileHover={{
+  //               y: -3,
+  //               boxShadow: "0px 10px 25px rgba(255,165,0,0.3)",
+  //             }}
+  //             className="flex items-center gap-5 p-3 rounded-xl transition-all bg-white/40 border border-white/10 backdrop-blur-md flex-1 min-w-[200px]"
+  //           >
+  //             <Image src={item.icon} alt="icon" width={45} height={42} />
+  //             <div>
+  //               <p className="text-gray-500 text-sm">{item.label}:</p>
+  //               <p className="font-semibold text-orange-500">{item.value}</p>
+  //             </div>
+  //           </motion.div>
+  //         ))}
+  //       </div>
 
-        {tour.program && (
-          <div className="flex flex-col items-center mt-16 w-full">
-            <h1 className="text-[30px] text-center font-bold">
-              {t.program.title}
-            </h1>
-            <div className="max-w-3xl mx-auto mt-8 flex flex-col gap-4 w-full">
-              {tour.program.map((el, index) => (
-                <motion.div
-                  key={index}
-                  className="border border-gray-200 rounded-xl overflow-hidden bg-white"
-                  whileHover={{ scale: 1.01 }}
-                >
-                  <button
-                    onClick={() => toggle(index)}
-                    className="w-full flex justify-between items-center px-6 py-4 hover:bg-orange-50 transition-colors rounded-lg"
-                  >
-                    <span className="font-semibold text-gray-800 text-[17px]">
-                      {el.day}
-                    </span>
-                    <motion.span
-                      animate={{ rotate: active === index ? 45 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-gray-500 text-2xl flex items-center"
-                    >
-                      <FiPlus />
-                    </motion.span>
-                  </button>
+  //       {tour.program && (
+  //         <div className="flex flex-col items-center mt-16 w-full">
+  //           <h1 className="text-[30px] text-center font-bold">
+  //             {t.program.title}
+  //           </h1>
+  //           <div className="max-w-3xl mx-auto mt-8 flex flex-col gap-4 w-full">
+  //             {tour.program.map((el, index) => (
+  //               <motion.div
+  //                 key={index}
+  //                 className="border border-gray-200 rounded-xl overflow-hidden bg-white"
+  //                 whileHover={{ scale: 1.01 }}
+  //               >
+  //                 <button
+  //                   onClick={() => toggle(index)}
+  //                   className="w-full flex justify-between items-center px-6 py-4 hover:bg-orange-50 transition-colors rounded-lg"
+  //                 >
+  //                   <span className="font-semibold text-gray-800 text-[17px]">
+  //                     {el.day}
+  //                   </span>
+  //                   <motion.span
+  //                     animate={{ rotate: active === index ? 45 : 0 }}
+  //                     transition={{ duration: 0.3 }}
+  //                     className="text-gray-500 text-2xl flex items-center"
+  //                   >
+  //                     <FiPlus />
+  //                   </motion.span>
+  //                 </button>
 
-                  <AnimatePresence initial={false}>
-                    {active === index && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                        className="px-6 py-4 bg-gray-50 text-gray-700 text-[15px] leading-relaxed"
-                      >
-                        {el.description}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        )}
+  //                 <AnimatePresence initial={false}>
+  //                   {active === index && (
+  //                     <motion.div
+  //                       initial={{ height: 0, opacity: 0 }}
+  //                       animate={{ height: "auto", opacity: 1 }}
+  //                       exit={{ height: 0, opacity: 0 }}
+  //                       transition={{ duration: 0.5, ease: "easeInOut" }}
+  //                       className="px-6 py-4 bg-gray-50 text-gray-700 text-[15px] leading-relaxed"
+  //                     >
+  //                       {el.description}
+  //                     </motion.div>
+  //                   )}
+  //                 </AnimatePresence>
+  //               </motion.div>
+  //             ))}
+  //           </div>
+  //         </div>
+  //       )}
 
-        <div
-          id="booking-button"
-          className="w-full flex justify-center z-50 fixed left-1/2 transition-all duration-300"
-          style={{
-            bottom: 40,
-            opacity: showButton ? 1 : 0,
-            pointerEvents: showButton ? "auto" : "none",
-            transform: showButton
-              ? "translateX(-50%)"
-              : "translate(-50%, 20px)",
-          }}
-        >
-          <motion.button
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0px 0px 25px rgba(255,165,0,0.5)",
-            }}
-            className="px-12 py-4 bg-orange-500 text-white rounded-lg text-[15px] hover:bg-orange-600 animate-pulse shadow-lg"
-            onClick={() => router.push(`/order?tour=${tour.id}`)}
-          >
-            Забронировать
-          </motion.button>
-        </div>
-      </div>
-    </div>
-  );
+  //       <div
+  //         id="booking-button"
+  //         className="w-full flex justify-center z-50 fixed left-1/2 transition-all duration-300"
+  //         style={{
+  //           bottom: 40,
+  //           opacity: showButton ? 1 : 0,
+  //           pointerEvents: showButton ? "auto" : "none",
+  //           transform: showButton
+  //             ? "translateX(-50%)"
+  //             : "translate(-50%, 20px)",
+  //         }}
+  //       >
+  //         <motion.button
+  //           whileHover={{
+  //             scale: 1.05,
+  //             boxShadow: "0px 0px 25px rgba(255,165,0,0.5)",
+  //           }}
+  //           className="px-12 py-4 bg-orange-500 text-white rounded-lg text-[15px] hover:bg-orange-600 animate-pulse shadow-lg"
+  //           onClick={() => router.push(`/order?tour=${tour.id}`)}
+  //         >
+  //           Забронировать
+  //         </motion.button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 }

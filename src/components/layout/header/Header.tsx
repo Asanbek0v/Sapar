@@ -54,12 +54,6 @@ const Header: FC = () => {
               Компании
             </Link>
             <Link
-              href="/carDetail"
-              className="hover:text-orange-500 transition-colors"
-            >
-              CarDetails
-            </Link>
-            <Link
               href="/about"
               className="hover:text-orange-500 transition-colors"
             >
