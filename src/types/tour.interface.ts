@@ -1,4 +1,4 @@
-export type Tour = {
+export type   Tour = {
   id: number;
   name: string;
   duration: number;
@@ -8,3 +8,7 @@ export type Tour = {
   available: boolean;
   images: string[];
 };
+
+export interface TourPageProps {
+  categorySlug: string;
+}
