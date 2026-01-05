@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlLike } from "react-icons/sl";
@@ -25,6 +25,7 @@ type TourProgram = {
 type Tour = {
   id: number;
   name: string;
+  description: string;
   route: string;
   price: number;
   days: string;
@@ -86,11 +87,13 @@ const translations = {
 export default function TourDetailPage() {
   const router = useRouter();
   const params = useParams();
-  const tourId = params.tourDetail || params.id;
+  const pathname = usePathname();
+
   const language = useAppSelector((state) => state.theme.language);
 
   const [tour, setTour] = useState<Tour | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
   const [active, setActive] = useState<number | null>(null);
   const [showButton, setShowButton] = useState(false);
 
@@ -100,8 +103,35 @@ export default function TourDetailPage() {
   const review = 8.4;
 
   useEffect(() => {
-    if (!tourId) return;
+    const tourId = params?.tourDetail;
 
+    console.log("3. Tour ID:", tourId);
+
+    if (!tourId) {
+      console.error("❌ Tour ID табылган жок!");
+      setError("Tour ID табылган жок");
+      setLoading(false);
+      return;
+    }
+
+    console.log("4. Loading tour with ID:", tourId);
+    setLoading(true);
+    setError("");
+
+    getTourById(tourId as string)
+      .then((data) => {
+        console.log("✅ Тур ийгиликтүү жүктөлдү:", data);
+        setTour(data);
+      })
+      .catch((err) => {
+        console.error("❌ Тур жүктөөдө ката:", err);
+        setError(err.message || "Тур жүктөөдө ката");
+      })
+      .finally(() => {
+        console.log("5. Loading finished");
+        setLoading(false);
+      });
+  }, [params, pathname]);
     // getTourById(tourId as string)
     //   .then((data) => setTour(data))
     //   .catch(console.error)
@@ -117,11 +147,29 @@ export default function TourDetailPage() {
   const toggle = (index: number) => setActive(active === index ? null : index);
 
   if (loading) {
-    return <div className="mt-40 text-center">{t.loading}</div>;
+    return (
+      <div className="mt-40 text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500 mx-auto"></div>
+        <p className="mt-4">{t.loading}</p>
+      </div>
+    );
   }
 
-  if (!tour) {
-    return <div className="mt-40 text-center">{t.notFound}</div>;
+  if (error || !tour) {
+    return (
+      <div className="mt-40 text-center">
+        <p className="text-xl font-bold text-red-500">{t.notFound}</p>
+        <p className="text-gray-500 mt-2">Pathname: {pathname}</p>
+        <p className="text-gray-500">Params: {JSON.stringify(params)}</p>
+        {error && <p className="text-red-400 mt-2">Error: {error}</p>}
+        <button
+          onClick={() => router.push("/tours?all=true")}
+          className="mt-4 bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Бардык турларга кайтуу
+        </button>
+      </div>
+    );
   }
 
   const features = [
@@ -188,7 +236,7 @@ export default function TourDetailPage() {
           </span>
           /
           <span
-            onClick={() => router.push("/tours")}
+            onClick={() => router.push("/tours?all=true")}
             className="cursor-pointer hover:underline"
           >
             Туры
@@ -218,6 +266,10 @@ export default function TourDetailPage() {
   //           </div>
   //         </div>
 
+          <div className="flex flex-col max-w-[400px] gap-6 w-full">
+            <h1 className="text-3xl font-bold">{tour.name}</h1>
+            <h2>{tour.description}</h2>
+            <p className="text-gray-700 leading-relaxed">{tour.route}</p>
   //         <div className="flex flex-col max-w-[400px] gap-6 w-full">
   //           <h1 className="text-3xl font-bold">{tour.name}</h1>
   //           <p className="text-gray-700 leading-relaxed">{tour.route}</p>
