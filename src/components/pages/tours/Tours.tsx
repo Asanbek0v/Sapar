@@ -1,32 +1,22 @@
 "use client";
+
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+
 import bgTour from "@/src/assets/img/bg-tour.svg";
 import car1 from "@/src/assets/img/car1.svg";
 import car2 from "@/src/assets/img/car2.svg";
 import car3 from "@/src/assets/img/car3.svg";
+
 import PriceRange from "./PriceRange/PriceRange";
 import { getTours } from "@/src/services/tours.service";
 import { Tour } from "@/src/types/tour.interface";
 
 type GroupType = "group" | "individual";
-
 const USD_RATE = 87.5;
 
-type CarCard = {
-  id: number;
-  name: string;
-  img: string;
-  available: boolean;
-  route: string;
-  price: number;
-  images: string[];
-};
-
-const carsData: CarCard[] = [
+const carsData = [
   { id: 1, name: "Легковой автомобиль", img: car1.src },
   { id: 2, name: "Внедорожник", img: car2.src },
   { id: 3, name: "Мини автобус", img: car3.src },
@@ -34,6 +24,8 @@ const carsData: CarCard[] = [
 
 export default function TourPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [groupType, setGroupType] = useState<GroupType>("group");
   const [tours, setTours] = useState<Tour[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
@@ -42,22 +34,50 @@ export default function TourPage() {
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const data = await getTours();
-        setTours(data);
+        // URL'ден параметрди текшерүү - /tours?all=true болсо бардыгын көрсөт
+        const showAll = searchParams?.get("all") === "true";
+
+        if (showAll) {
+          // Header'ден келсе localStorage'ди тазалап, бардыгын көрсөт
+          localStorage.removeItem("searchResults");
+          localStorage.removeItem("searchParams");
+          const data = await getTours();
+          console.log("Header'ден: Бардык турлар көрсөтүлүүдө:", data.length);
+          setTours(data);
+        } else {
+          // localStorage'ден издөө натыйжаларын текшерүү
+          const searchResults = localStorage.getItem("searchResults");
+
+          if (searchResults) {
+            // Эгерде издөө натыйжалары бар болсо, аларды колдонуу
+            const filteredTours = JSON.parse(searchResults);
+            console.log("localStorage'ден турлар:", filteredTours.length);
+            setTours(filteredTours);
+          } else {
+            // Эгерде издөө натыйжалары жок болсо, бардык турларды алуу
+            const data = await getTours();
+            console.log("API'ден бардык турлар:", data.length);
+            setTours(data);
+          }
+        }
+      } catch (error) {
+        console.error("Турларды жүктөөдө ката:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchTours();
-  }, []);
-console.log();
 
-  const toursWithUsdPrice = useMemo(() => {
-    return tours.map((t) => ({
-      ...t,
-      priceUsd: t.price / USD_RATE,
-    }));
-  }, [tours]);
+    fetchTours();
+  }, [searchParams]);
+
+  const toursWithUsdPrice = useMemo(
+    () =>
+      tours.map((t) => ({
+        ...t,
+        priceUsd: t.price / USD_RATE,
+      })),
+    [tours]
+  );
 
   const prices = useMemo(() => {
     if (!toursWithUsdPrice.length) return { min: 0, max: 0 };
@@ -67,192 +87,130 @@ console.log();
       max: Math.ceil(Math.max(...values)),
     };
   }, [toursWithUsdPrice]);
-  const filteredTours = tours?.filter(
-    (t) => t.price >= priceRange[0] && t.price <= priceRange[1]
-  );
-  return (
-    <div className="w-full">
-      <section
-        className="w-full h-[260px] sm:h-80 lg:h-[380px] bg-cover bg-center flex items-center relative"
-        style={{ backgroundImage: `url(${bgTour.src})` }}
-      >
-        <div className="container mx-auto px-4 text-white z-10 relative">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-            ТРЕККИНГ
-          </h1>
-          <p className="text-base sm:text-lg lg:text-xl max-w-xl">
-            Собери рюкзак — и отправься за новыми историями
-          </p>
-        </div>
-        <div className="absolute inset-0 bg-black/40"></div>
-      </section>
 
   useEffect(() => {
-    if (prices.max > 0) setPriceRange([prices.min, prices.max]);
+    if (prices.max > 0) {
+      setPriceRange([prices.min, prices.max]);
+    }
   }, [prices]);
 
-  const filteredTours = useMemo(() => {
-    return toursWithUsdPrice.filter(
-      (t) => t.priceUsd >= priceRange[0] && t.priceUsd <= priceRange[1]
-    );
-  }, [toursWithUsdPrice, priceRange]);
+  const filteredTours = useMemo(
+    () =>
+      toursWithUsdPrice.filter(
+        (t) => t.priceUsd >= priceRange[0] && t.priceUsd <= priceRange[1]
+      ),
+    [toursWithUsdPrice, priceRange]
+  );
 
-  if (loading) return <p className="text-center py-10">Загрузка...</p>;
+  if (loading) {
+    return <p className="text-center py-10">Загрузка...</p>;
+  }
+
+  if (tours.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-10 text-center">
+        <p className="text-xl">Турлар табылган жок</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full mt-[100px]">
-      <div className="container mx-auto px-4 py-10 flex flex-col lg:flex-row gap-6">
-        <aside className="w-full lg:w-[260px] bg-white shadow p-5 rounded-xl h-fitfixed">
-          <div className="flex flex-col gap-2">
-            <button
-              onClick={() => setGroupType("group")}
-              className={`text-left py-2 ${
-                groupType === "group" ? "font-semibold text-orange-500" : ""
-              }`}
-            >
-              Групповые туры
-            </button>
-            <button
-              onClick={() => setGroupType("individual")}
-              className={`text-left py-2 ${
-                groupType === "individual"
-                  ? "font-semibold text-orange-500"
-                  : ""
-              }`}
-            >
-              Индивидуальные туры
-            </button>
+      {/* HEADER */}
+      <section
+        className="w-full h-[260px] bg-cover bg-center flex items-center relative"
+        style={{ backgroundImage: `url(${bgTour.src})` }}
+      >
+        <div className="container mx-auto px-4 text-white z-10">
+          <h1 className="text-4xl font-bold">ТРЕККИНГ</h1>
+          <p>Собери рюкзак — и отправься за новыми историями</p>
+        </div>
+        <div className="absolute inset-0 bg-black/40" />
+      </section>
 
-            {groupType === "group" && prices.max > 0 && (
-              <>
-                <p className="text-sm mt-4">
-                  Цена: ${priceRange[0].toFixed(0)} – $
-                  {priceRange[1].toFixed(0)}
-                </p>
-                <PriceRange
-                  min={prices.min}
-                  max={prices.max}
-                  step={10}
-                  value={priceRange}
-                  onChange={setPriceRange}
-                />
-              </>
-            )}
-          </div>
-        </aside>
+      <div className="container mx-auto px-4 py-10 flex gap-6">
+        {/* SIDEBAR */}
+        <aside className="w-[260px] bg-white shadow p-5 rounded-xl h-fit">
+          <button
+            onClick={() => setGroupType("group")}
+            className={`block mb-2 ${
+              groupType === "group" && "text-orange-500 font-semibold"
+            }`}
+          >
+            Групповые туры
+          </button>
 
-        <main className="flex-1 mt-4">
-          {groupType === "group" && (
+          <button
+            onClick={() => setGroupType("individual")}
+            className={`block ${
+              groupType === "individual" && "text-orange-500 font-semibold"
+            }`}
+          >
+            Индивидуальные туры
+          </button>
+
+          {groupType === "group" && prices.max > 0 && (
             <>
-              {filteredTours.length === 0 ? (
-                <p className="text-center text-gray-500">
-                  Туры по выбранной цене не найдены
-                </p>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredTours.map((t) => (
-                    <div
-                      key={t.id}
-                      className="rounded-xl overflow-hidden cursor-pointer"
-                      onClick={() => router.push(`/toursData/${t.id}`)}
-                    >
-                      <div className="relative h-44">
-                        <Image
-                          src={t.images?.[0] || "/placeholder.jpg"}
-                          alt={t.name}
-                          fill
-                          className="object-cover"
-                        />
-                        <span className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                          {t.duration} дней {t.duration - 1} ночей
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col justify-between h-50">
-                        <h3 className="font-bold text-[18px] mt-2">{t.name}</h3>
-                        <p className="text-[15px] text-gray-600">
-                          {t.category}
-                        </p>
-                        <p className="text-[16px] text-gray-900 line-clamp-2">
-                          {t.description}
-                        </p>
-                        <div className="flex justify-between items-center mt-4">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              router.push(`/toursData/${t.id}`);
-                            }}
-                            className="bg-orange-500 text-white px-4 py-1 rounded-md"
-                          >
-                            Подробнее
-                          </button>
-                          <span className="font-semibold text-orange-500">
-                            ${t.priceUsd.toFixed(0)}
-                          </span>
-                        </div>
-                      </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTours?.map((t) => (
-                <div
-                  key={t.id}
-                  className="bg-white shadow rounded-xl overflow-hidden cursor-pointer"
-                  onClick={() => router.push(`/tours/${t.id}`)}
-                >
-                  <div className="relative h-44">
-                    <img
-                      src={t.images?.[0] || "/placeholder.jpg"}
-                      alt={t.name}
-                      fill
-                      className="object-cover"
-                    />
-                    <span className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded z-10">
-                      {t.days}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-bold">{t.name}</h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {t.route}
-                    </p>
-                    <div className="flex justify-between items-center mt-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(`/tours/${t.id}`);
-                        }}
-                        className="bg-orange-500 text-white px-4 py-1 rounded hover:bg-orange-600 transition"
-                      >
-                        Подробнее
-                      </button>
-                      <span className="font-semibold">${t.price}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <p className="mt-4">
+                Цена: ${priceRange[0]} – ${priceRange[1]}
+              </p>
+              <PriceRange
+                min={prices.min}
+                max={prices.max}
+                value={priceRange}
+                onChange={setPriceRange}
+              />
             </>
           )}
+        </aside>
 
-          {groupType === "individual" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {carsData.map((c) => (
-                <div
-                  key={c.id}
-                  onClick={() => router.push("/cars")}
-                  className="text-center cursor-pointer bg-white shadow rounded-xl p-4 hover:shadow-lg transition"
-                >
-                  <div className="relative h-40 mb-3">
-                    <Image
-                      src={c.img}
-                      alt={c.name}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <p className="font-medium">{c.name}</p>
+        <main className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {groupType === "group" &&
+            filteredTours.map((t) => (
+              <div
+                key={t.id}
+                onClick={() => router.push(`/tours/${t.id}`)}
+                className="bg-white shadow rounded-xl overflow-hidden cursor-pointer"
+              >
+                <div className="relative h-44">
+                  <Image
+                    src={t.images?.[0] || "/placeholder.jpg"}
+                    alt={t.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-              ))}
-            </div>
-          )}
+                <div className="p-4">
+                  <h3 className="font-bold">{t.name}</h3>
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {t.description}
+                  </p>
+                  <div className="flex justify-between mt-4">
+                    <span className="font-semibold text-orange-500">
+                      ${t.priceUsd.toFixed(0)}
+                    </span>
+                    <button
+                      className="bg-orange-500 text-white px-3 py-1 rounded"
+                      onClick={() => router.push(`/tours/${t.id}`)}
+                    >
+                      Подробнее
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+          {groupType === "individual" &&
+            carsData.map((c) => (
+              <div
+                key={c.id}
+                onClick={() => router.push("/cars")}
+                className="bg-white shadow rounded-xl p-4 text-center cursor-pointer"
+              >
+                <Image src={c.img} alt={c.name} width={160} height={120} />
+                <p className="mt-2">{c.name}</p>
+              </div>
+            ))}
         </main>
       </div>
     </div>
