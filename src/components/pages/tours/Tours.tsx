@@ -9,9 +9,14 @@ import car1 from "@/src/assets/img/car1.svg";
 import car2 from "@/src/assets/img/car2.svg";
 import car3 from "@/src/assets/img/car3.svg";
 
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 import PriceRange from "./PriceRange/PriceRange";
 import { getTours } from "@/src/services/tours.service";
+import { getCars } from "@/src/services/cars.service";
 import { Tour } from "@/src/types/tour.interface";
+import { Car } from "@/src/types/cars.interface";
 
 type GroupType = "group" | "individual";
 const USD_RATE = 87.5;
@@ -22,14 +27,23 @@ const carsData = [
   { id: 3, name: "Мини автобус", img: car3.src },
 ];
 
-export default function TourPage() {
+interface TourPageProps {
+  categoryTitle: string;
+}
+
+export default function TourPage({ categoryTitle }: TourPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [groupType, setGroupType] = useState<GroupType>("group");
+
   const [tours, setTours] = useState<Tour[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
-  const [loading, setLoading] = useState(true);
+  const [loadingTours, setLoadingTours] = useState(true);
+
+  const [cars, setCars] = useState<Car[]>([]);
+  const [loadingCars, setLoadingCars] = useState(true);
+  const [selectedCarCategory, setSelectedCarCategory] = useState<string>("passenger");
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -63,7 +77,7 @@ export default function TourPage() {
       } catch (error) {
         console.error("Турларды жүктөөдө ката:", error);
       } finally {
-        setLoading(false);
+        setLoadingTours(false);
       }
     };
 
@@ -82,10 +96,7 @@ export default function TourPage() {
   const prices = useMemo(() => {
     if (!toursWithUsdPrice.length) return { min: 0, max: 0 };
     const values = toursWithUsdPrice.map((t) => t.priceUsd);
-    return {
-      min: Math.floor(Math.min(...values)),
-      max: Math.ceil(Math.max(...values)),
-    };
+    return { min: Math.floor(Math.min(...values)), max: Math.ceil(Math.max(...values)) };
   }, [toursWithUsdPrice]);
 
   useEffect(() => {
