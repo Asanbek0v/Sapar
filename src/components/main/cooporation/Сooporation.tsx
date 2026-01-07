@@ -1,13 +1,62 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import frends from "../../../assets/frends.png";
 import { FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 import Link from "next/link";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Cooporation = () => {
+  const [name, setName] = useState("");
+  const [question, setQuestion] = useState("");
+  const [contact, setContact] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const sendQuestionToTelegram = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name || !question || !contact) {
+      toast.error("Пожалуйста, заполните все поля!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const token = "8598838314:AAH2i5jkdQLUqGO42hr55zBZOcJP9tzeL-U"; // твой токен
+      const chat_id = "@Sapar_kg";
+      const api_url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      const message = `
+📩 <b>Новый вопрос с сайта</b>
+
+<b>Имя:</b> ${name}
+<b>Вопрос:</b> ${question}
+<b>Контакты:</b> ${contact}
+`;
+
+      await axios.post(api_url, {
+        chat_id,
+        text: message,
+        parse_mode: "HTML",
+      });
+
+      toast.success("Сообщение отправлено! Мы свяжемся с вами.");
+      setName("");
+      setQuestion("");
+      setContact("");
+    } catch (error) {
+      console.error(error);
+      toast.error("Ошибка отправки сообщения");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <section className="pt-16 pb-16">
+    <section className="pt-25 pb-16">
+      <ToastContainer />
       <div className="container mx-auto px-4">
         <div className="flex flex-col sm:flex-row justify-between gap-8 items-center">
           <div className="max-w-xl">
@@ -29,16 +78,6 @@ const Cooporation = () => {
               горные пики, экскурсии по достопримечательностям, организация
               конференций, трансфер и многое другое.
             </p>
-    
-
-            <p className="text-gray-700 leading-relaxed">
-              Мы готовы рассмотреть любые варианты сотрудничества с
-              туристическими агентствами, отелями и другими компаниями или
-              лицами, которые заинтересованы в организации туров и любых
-              туристических услуг в Кыргызстане. Наша компания предоставляет
-              широкий спектр туров, включая пешие и конные туры, восхождения на
-              горные пики, экскурсии, конференции, трансферы и многое другое.
-            </p>
 
             <p className="mt-6 text-gray-800 pb-10 pt-4">
               С уважением, <br />
@@ -51,7 +90,7 @@ const Cooporation = () => {
           </div>
         </div>
 
-        <div className="mt-16 border-9 border-orange-500 rounded-4xl  sm:pt-10 sm:p-10 bg-[#f3f3f3]">
+        <div className="mt-16 border-9 border-orange-500 rounded-4xl sm:pt-10 sm:p-10 bg-[#f3f3f3]">
           <div className="flex flex-col sm:flex-row justify-between gap-10 items-start">
             <div className="max-w-sm">
               <h2 className="text-3xl sm:text-4xl font-bold mb-3">
@@ -80,29 +119,39 @@ const Cooporation = () => {
               </div>
             </div>
 
-            <form className="flex flex-col gap-4 w-full max-w-xl">
+            <form
+              onSubmit={sendQuestionToTelegram}
+              className="flex flex-col gap-4 w-full max-w-xl"
+            >
               <input
                 type="text"
                 placeholder="Ваше имя"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="rounded-full p-3 border bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
 
               <textarea
                 placeholder="Ваш вопрос"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
                 className="rounded-2xl p-4 border h-28 resize-none bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
 
               <input
                 type="text"
                 placeholder="Ваши контакты"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
                 className="rounded-full p-3 border bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
 
               <button
                 type="submit"
+                disabled={loading}
                 className="bg-orange-500 text-white py-3 rounded-full hover:bg-orange-600 transition-colors"
               >
-                Отправить
+                {loading ? "Отправка..." : "Отправить"}
               </button>
             </form>
           </div>
