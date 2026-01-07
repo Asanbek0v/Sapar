@@ -1,0 +1,121 @@
+[33m681ef31[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdastan[m[33m, [m[1;31morigin/dev[m[33m)[m Merge pull request #25 from Asanbek0v/dastan
+[33m1c31ebe[m Merge branch 'dev' into dastan
+[33m9aa08fe[m[33m ([m[1;31morigin/dastan[m[33m)[m end tourDetail
+[33mb4ce859[m Merge pull request #24 from Asanbek0v/bakdoolot
+[33mc14d5de[m Merge branch 'dev' into bakdoolot
+[33m2e11c98[m update tours cars components
+[33mfd51ffb[m Merge pull request #22 from Asanbek0v/dastan
+[33m2bf6668[m dastan
+[33mda1191b[m Merge branch 'master' of https://github.com/Dastan396/Sapar into bakdoolot
+[33m4588b99[m Merge pull request #21 from Asanbek0v/bakdoolot
+[33mffd13b9[m Merge branch 'dev' into bakdoolot
+[33m5218e06[m get tours
+[33m32397c6[m Merge pull request #20 from Asanbek0v/dastan
+[33m388e2bf[m tourDetail
+[33mf8d5d3e[m hero end
+[33ma965625[m[33m ([m[1;31morigin/bakdoolot[m[33m)[m tours connect backend
+[33m6f7bfe6[m Merge pull request #19 from Asanbek0v/baidoolot
+[33mb64e4b3[m hello Chika
+[33m40e6c26[m added details
+[33m95b55c5[m Merge pull request #18 from Asanbek0v/kubanych
+[33m58045e4[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #17 from Asanbek0v/kubanych
+[33m203eb30[m Merge branch 'master' into kubanych
+[33mcf96844[m admin panel
+[33m22d9796[m Merge pull request #16 from Asanbek0v/bakdoolot
+[33m8e5f459[m update header
+[33m8d27d82[m Merge pull request #15 from Dastan396/bakdoolot
+[33m436e77f[m just commit
+[33mabbcf02[m *
+[33m97c4504[m Merge pull request #14 from Dastan396/dastan
+[33m93f18a4[m conflig rtk query
+[33mc1ee1a7[m Merge pull request #13 from Dastan396/dastan
+[33m45f3328[m RTK QUERY
+[33m0d6f285[m Merge pull request #11 from Dastan396/bakdoolot
+[33mb5c2f90[m lib, service
+[33m94fa458[m Merge pull request #10 from Dastan396/bakdoolot
+[33mf870b7c[m resolve conflict
+[33m47ba36a[m Merge pull request #9 from Dastan396/dastan
+[33m2f57a61[m Merge branch 'dev' into dastan
+[33m59eca88[m update all
+[33m4dadc8a[m update all
+[33me7cfd34[m NURS FINISH:
+[33mf18f5de[m Merge pull request #8 from Dastan396/bakdoolot
+[33ma383127[m bakdoolot
+[33m623bae3[m NURS FINISH:
+[33mbe06b53[m Merge pull request #7 from Dastan396/bakdoolot
+[33m7b01595[m update tours, attraction,
+[33m2cb40c7[m tours
+[33m85b4941[m Merge pull request #6 from Dastan396/dastan
+[33m2db5371[m Merge branch 'dev' into dastan
+[33m040fffc[m ubdate header tourDetail footer
+[33m7a0939d[m resolve conflicts tours, header
+[33m9f1ea7b[m cars
+[33m4821d83[m carDetails
+[33m8d5ac68[m conflig tourdetail
+[33md30abb5[m[33m ([m[1;32mdev[m[33m)[m Merge changes from remote dev
+[33mb54d9b3[m nurs
+[33m16dcaac[m tourDetail
+[33m1af4eb9[m AUTH PAGE AND REVIEW PAGE
+[33m289385c[m finish merge
+[33m0ce8e11[m Merge pull request #5 from Dastan396/dastan
+[33m3596aa9[m conflig footer
+[33m06bca53[m update header
+[33m4f23135[m Merge pull request #4 from Dastan396/bakdoolot
+[33m3e47fc0[m conflict resolution
+[33m51ffe5d[m tour, attraction, tourPage
+[33m571e51a[m Merge pull request #3 from Dastan396/dastan
+[33meba8727[m conflic
+[33m4d96eba[m hero, footer
+[33m59f0e4f[m hero
+[33m220467a[m Merge pull request #2 from Dastan396/dastan
+[33m56d086e[m ready
+[33m691a737[m Merge pull request #1 from Dastan396/baidoolot
+[33ma64607a[m update
+[33ma980a79[m bug
+[33mf47dc93[m review cooporation about
+[33md013b8d[m add components attractoin, tours
+[33m977e2b3[m added new components
+[33m33d8d28[m add components
+[33md540ad5[m pages
+[33mcc3e0ad[m header
+[33mda73b49[m[33m ([m[1;31morigin/baidoolot[m[33m, [m[1;32mmaster[m[33m)[m first commit
+[33m4b546c5[m Initial commit from Create Next App
+[33m681ef31[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdastan[m[33m, [m[1;31morigin/dev[m[33m)[m HEAD@{0}: pull origin dev: Fast-forward
+[33m9aa08fe[m[33m ([m[1;31morigin/dastan[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33m9aa08fe[m[33m ([m[1;31morigin/dastan[m[33m)[m HEAD@{2}: reset: moving to 9aa08fe
+[33m681ef31[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdastan[m[33m, [m[1;31morigin/dev[m[33m)[m HEAD@{3}: pull origin dev: Fast-forward
+[33m9aa08fe[m[33m ([m[1;31morigin/dastan[m[33m)[m HEAD@{4}: commit: end tourDetail
+[33mfd51ffb[m HEAD@{5}: pull origin dev: Fast-forward
+[33m2bf6668[m HEAD@{6}: commit: dastan
+[33m32397c6[m HEAD@{7}: pull origin dev: Fast-forward
+[33m388e2bf[m HEAD@{8}: commit (merge): tourDetail
+[33mf8d5d3e[m HEAD@{9}: commit: hero end
+[33m95b55c5[m HEAD@{10}: pull origin dev: Fast-forward
+[33m93f18a4[m HEAD@{11}: reset: moving to HEAD
+[33m93f18a4[m HEAD@{12}: commit: conflig rtk query
+[33m45f3328[m HEAD@{13}: commit: RTK QUERY
+[33m94fa458[m HEAD@{14}: pull origin dev: Fast-forward
+[33m47ba36a[m HEAD@{15}: pull origin dev: Fast-forward
+[33m59eca88[m HEAD@{16}: commit (merge): update all
+[33m4dadc8a[m HEAD@{17}: commit: update all
+[33m040fffc[m HEAD@{18}: commit: ubdate header tourDetail footer
+[33m8d5ac68[m HEAD@{19}: commit: conflig tourdetail
+[33md30abb5[m[33m ([m[1;32mdev[m[33m)[m HEAD@{20}: pull origin dev: Fast-forward
+[33m16dcaac[m HEAD@{21}: checkout: moving from dev to dastan
+[33md30abb5[m[33m ([m[1;32mdev[m[33m)[m HEAD@{22}: checkout: moving from dev to dev
+[33md30abb5[m[33m ([m[1;32mdev[m[33m)[m HEAD@{23}: commit (merge): Merge changes from remote dev
+[33mb54d9b3[m HEAD@{24}: commit (merge): nurs
+[33m59f0e4f[m HEAD@{25}: checkout: moving from dastan to dev
+[33m16dcaac[m HEAD@{26}: commit (merge): tourDetail
+[33m289385c[m HEAD@{27}: commit (merge): finish merge
+[33m3596aa9[m HEAD@{28}: commit: conflig footer
+[33meba8727[m HEAD@{29}: commit (merge): conflic
+[33m4d96eba[m HEAD@{30}: commit: hero, footer
+[33m56d086e[m HEAD@{31}: checkout: moving from dev to dastan
+[33m59f0e4f[m HEAD@{32}: commit: hero
+[33m691a737[m HEAD@{33}: pull origin dev: Fast-forward
+[33md013b8d[m HEAD@{34}: checkout: moving from dastan to dev
+[33m56d086e[m HEAD@{35}: commit: ready
+[33md013b8d[m HEAD@{36}: pull origin dev: Fast-forward
+[33mda73b49[m[33m ([m[1;31morigin/baidoolot[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{37}: checkout: moving from master to dastan
+[33mda73b49[m[33m ([m[1;31morigin/baidoolot[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{38}: clone: from https://github.com/Dastan396/Sapar.git
