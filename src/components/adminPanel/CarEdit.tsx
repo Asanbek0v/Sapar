@@ -24,6 +24,7 @@ export const CarEdit = () => (
       <TextInput source="fuelType" label="Топливо" validate={required()} />
       <TextInput source="drive" label="Привод" validate={required()} />
       <NumberInput source="places" label="Мест" validate={required()} />
+      <TextInput source="category" label="Категория" validate={required()} />
       <ArrayInput source="images" label="Фотографии (URL)">
         <SimpleFormIterator inline>
           <TextInput

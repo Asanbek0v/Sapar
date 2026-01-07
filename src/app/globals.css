@@ -1,17 +1,17 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 * {
-	font-family: sans-serif;
-	box-sizing: border-box;
+  font-family: sans-serif;
+  box-sizing: border-box;
 }
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 .container {
-	max-width: 1240px;
-	width: 100%;
-	margin: 0 auto;
-	padding: 0 20px;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 h1,
 h2,
@@ -21,32 +21,103 @@ h5,
 h6,
 a,
 button {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 li {
-	list-style: none;
+  list-style: none;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  pointer-events: auto;
-  appearance: none;
-  height: 16px;
-  width: 16px;
-  background: #f97316;
-  border-radius: 9999px;
-  cursor: pointer;
+:root {
+  --bg-light: #ffffff;
+  --bg-secondary-light: #f3f4f6;
+  --text-light: #1f2937;
+  --text-secondary-light: #6b7280;
+  --border-light: #e5e7eb;
+
+  --bg-dark: #0f172a;
+  --bg-secondary-dark: #1e293b;
+  --text-dark: #f1f5f9;
+  --text-secondary-dark: #cbd5e1;
+  --border-dark: #334155;
 }
 
-input[type="range"]::-moz-range-thumb {
-  pointer-events: auto;
-  height: 16px;
-  width: 16px;
-  background: #f97316;
-  border-radius: 9999px;
-  cursor: pointer;
+@layer base {
+  * {
+    @apply transition-colors duration-300 ease-in-out;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+  }
+
+  html.dark body {
+    @apply bg-[#0f172a] text-gray-100;
+  }
+}
+
+@layer components {
+  html.dark h1,
+  html.dark h2,
+  html.dark h3,
+  html.dark h4,
+  html.dark h5,
+  html.dark h6 {
+    @apply text-gray-100;
+  }
+
+  html.dark p,
+  html.dark span,
+  html.dark div:not(.no-dark-text),
+  html.dark label,
+  html.dark li,
+  html.dark a:not(.no-dark) {
+    @apply text-gray-100;
+  }
+
+  html.dark input:not([type="checkbox"]):not([type="radio"]),
+  html.dark select,
+  html.dark textarea {
+    @apply bg-[#1e293b] text-gray-100 border-gray-700;
+  }
+
+  html.dark input::placeholder {
+    @apply text-gray-400;
+  }
+
+  html.dark .card,
+  html.dark .bg-white {
+    @apply !bg-[#1e293b] !text-gray-100;
+  }
+
+  html.dark [class*="border"] {
+    @apply border-gray-700;
+  }
+
+  html.dark a:hover {
+    @apply text-orange-400;
+  }
+
+  html.dark ::-webkit-scrollbar {
+    @apply bg-[#0f172a];
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 hover:bg-gray-600;
+  }
+}
+
+@layer utilities {
+  .no-transition,
+  .no-transition * {
+    transition: none !important;
+  }
+
+  .no-dark-text {
+    color: inherit !important;
+  }
 }

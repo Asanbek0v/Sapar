@@ -30,10 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LoyautClient>
-          {children}
-          <ToastContainer position="top-right" />
-        </LoyautClient>
+        <div className="">
+          <LoyautClient>
+            {children}
+            <ToastContainer position="top-right" />
+          </LoyautClient>
+        </div>
       </body>
     </html>
   );
