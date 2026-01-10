@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import { Star, Send, User } from "lucide-react";
-import { useGetTodosQuery } from "@/src/redux/api/todo";
+import { useGetTodosQuery } from "@/src/redux/api/todo/index";
 
 interface ITodo {
   id: number;
