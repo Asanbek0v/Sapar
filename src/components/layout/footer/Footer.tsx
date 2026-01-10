@@ -64,7 +64,7 @@ const Footer: FC = () => {
   };
 
   return (
-    <footer className="mt-24 bg-white">
+    <footer id="footer" className="mt-24 bg-white" >
       <ToastContainer position="top-right" />
 
       <div className="container py-10">

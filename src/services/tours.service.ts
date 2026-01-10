@@ -7,13 +7,13 @@ export const getTours = async (): Promise<Tour[]> => {
   try {
     const { data } = await axios.get(`${API_URL}/tours`);
     console.log("getTours API жооп:", data);
-    
+
     // Ар кандай форматтарды текшерүү
     if (data.tours) return data.tours;
     if (data.data?.tours) return data.data.tours;
     if (data.data) return data.data;
     if (Array.isArray(data)) return data;
-    
+
     return [];
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -36,12 +36,12 @@ export const getTourById = async (id: string | number): Promise<Tour> => {
     console.log("Толук URL:", `${API_URL}/tours/${id}`);
 
     const { data } = await axios.get(`${API_URL}/tours/${id}`);
-    
+
     console.log("Backend толук жооп:", JSON.stringify(data, null, 2));
-    
+
     // Ар кандай форматтарды текшерүү
     let tour = null;
-    
+
     if (data.tour) {
       console.log("✅ data.tour табылды");
       tour = data.tour;
@@ -58,19 +58,18 @@ export const getTourById = async (id: string | number): Promise<Tour> => {
       console.error("❌ Тур маалыматы табылган жок!");
       console.log("Келген data структурасы:", Object.keys(data));
     }
-    
+
     if (!tour) {
       throw new Error("Тур маалыматы табылган жок");
     }
-    
+
     console.log("Кайтарылган тур:", tour);
     return tour;
-    
   } catch (error: any) {
     console.error("=== getTourById КАТА ===");
     console.error("Ката типи:", error.name);
     console.error("Ката билдирүүсү:", error.message);
-    
+
     if (error.response) {
       console.error("Response status:", error.response.status);
       console.error("Response data:", error.response.data);
@@ -79,7 +78,7 @@ export const getTourById = async (id: string | number): Promise<Tour> => {
     } else {
       console.error("Request түзүүдө ката");
     }
-    
+
     throw error;
   }
 };

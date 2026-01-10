@@ -4,16 +4,21 @@ import themeReducer from "./slices/Slice";
 import favoriteReducer from "./slices/FavoriteSlice";
 import languageReducer from "./slices/languageSlice";
 import { movieApi } from "./api/todo/movieApi";
+// import { toursApi } from "./api/tours/toursApi"; // Жолду текшериңиз
+
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     [movieApi.reducerPath]: movieApi.reducer,
+    // [toursApi.reducerPath]: toursApi.reducer,
     language: languageReducer,
     theme: themeReducer,
     favorite: favoriteReducer,
   },
-  middleware: (GetDefaultMiddleware) =>
-    GetDefaultMiddleware().concat(api.middleware).concat(movieApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(api.middleware).concat(movieApi.middleware),
+  // .concat(toursApi.middleware),
 });
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

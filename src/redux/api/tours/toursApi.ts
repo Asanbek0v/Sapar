@@ -1,40 +1,40 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export type TourProgram = {
-  day: string;
-  description: string;
-};
+// export interface Tour {
+//   id: string;
+//   _id?: string;
+//   name: string;
+//   description: string;
+//   city: string;
+//   price: number;
+//   duration: number;
+//   maxPeople: number;
+//   images: string[];
+// }
 
-export type Tour = {
-  _id: string; // MongoDB үчүн _id кошулду
-  id: string;
-  name: string;
-  description: string;
-  city: string;
-  category: string;
-  date: string;
-  price: number;
-  duration: number;
-  maxPeople: number;
-  images: string[];
-  program?: TourProgram[];
-};
+// export const toursApi = createApi({
+//   reducerPath: "toursApi",
+//   baseQuery: fetchBaseQuery({
+//     baseUrl: "https://tourism-backend-laq8.onrender.com/ru/api/v1",
+//   }),
+//   endpoints: (builder) => ({
+//     getTourById: builder.query<Tour, string>({
+//       query: (id) => `/tours/${id}`,
+//       transformResponse: (response: any) => {
+//         // API { success: true, data: { name: "..." } } түрүндө келсе:
+//         return response?.data || response;
+//       },
+//     }),
+//     getTourProgram: builder.query<string[], string>({
+//       query: (id) => `/tours/${id}/program`,
+//       transformResponse: (response: any) => {
+//         // Программа массив же data.days ичинде болушу мүмкүн
+//         if (response?.data?.days) return response.data.days;
+//         if (response?.days) return response.days;
+//         return Array.isArray(response) ? response : [];
+//       },
+//     }),
+//   }),
+// });
 
-export const toursApi = createApi({
-  reducerPath: "toursApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  }),
-  endpoints: (builder) => ({
-    getTourById: builder.query<Tour, string>({
-      query: (id) => `/tours/${id}`,
-      // Backend'ден келген маалыматты текшерип, тазалап алуу
-      transformResponse: (response: any) => {
-        // Эгер жооп { data: { tour } } болсо же түз эле келсе, ошону кайтарат
-        return response.data || response;
-      },
-    }),
-  }),
-});
-
-export const { useGetTourByIdQuery } = toursApi;
+// export const { useGetTourByIdQuery, useGetTourProgramQuery } = toursApi;

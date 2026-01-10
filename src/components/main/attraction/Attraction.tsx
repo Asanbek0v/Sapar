@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Carousel from "../../carousel/Carousel";
-import { getTopTours } from "../../../services/tours.service";
+import { getTours } from "../../../services/tours.service";
 import { Tour } from "../../../types/tour.interface";
 
 const Attraction = () => {
@@ -11,7 +11,7 @@ const Attraction = () => {
   const router = useRouter();
 
   useEffect(() => {
-    getTopTours().then(setTours).catch(console.error);
+    getTours().then(setTours).catch(console.error);
   }, []);
 
   const handleClick = (id: number | string) => {
@@ -26,10 +26,7 @@ const Attraction = () => {
           <span className="text-orange-500">Кыргызстана</span>
         </h1>
 
-        <Carousel
-          items={tours}
-          onItemClick={(tour) => handleClick(tour.id)}
-        />
+        <Carousel items={tours} onItemClick={(tour) => handleClick(tour.id)} />
       </div>
     </section>
   );

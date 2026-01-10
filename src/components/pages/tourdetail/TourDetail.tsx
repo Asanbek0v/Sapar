@@ -15,11 +15,6 @@ import levelIcon from "@/src/assets/level.svg";
 import groupIcon from "@/src/assets/group.png";
 import { getTourById } from "@/src/services/tours.service";
 
-type TourProgram = {
-  day: string;
-  description: string;
-};
-
 type Tour = {
   id: string;
   name: string;
@@ -31,7 +26,6 @@ type Tour = {
   duration: number;
   maxPeople: number;
   images: string[];
-  program?: TourProgram[];
 };
 
 export default function TourDetailPage() {
@@ -40,6 +34,7 @@ export default function TourDetailPage() {
   const pathname = usePathname();
 
   const [tour, setTour] = useState<Tour | null>(null);
+  const [program, setProgram] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [active, setActive] = useState<number | null>(null);
@@ -48,8 +43,7 @@ export default function TourDetailPage() {
   const review = 8.4;
 
   useEffect(() => {
-    const tourId = params?.tourDetail;
-    console.log("Tour ID:", tourId);
+    const tourId = params?.tourDetail as string;
 
     if (!tourId) {
       setError("ID тура не найден");
@@ -57,19 +51,32 @@ export default function TourDetailPage() {
       return;
     }
 
-    setLoading(true);
-    setError("");
+    const fetchAllData = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        // 1. Турдун маалыматы
+        const tourData = await getTourById(tourId);
+        setTour(tourData.data || tourData);
 
-    getTourById(tourId as string)
-      .then((data) => {
-        setTour(data);
-      })
-      .catch((err) => {
+        const programRes = await fetch(
+          `https://tourism-backend-laq8.onrender.com/ru/api/v1/tours/${tourId}/program`
+        );
+        const programData = await programRes.json();
+
+        if (programData && programData.days) {
+          setProgram(programData.days);
+        } else if (Array.isArray(programData)) {
+          setProgram(programData);
+        }
+      } catch (err: any) {
         setError(err.message || "Ошибка загрузки тура");
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchAllData();
   }, [params, pathname]);
 
   useEffect(() => {
@@ -93,9 +100,7 @@ export default function TourDetailPage() {
     return (
       <div className="mt-40 text-center">
         <p className="text-xl font-bold text-red-500">Тур не найден</p>
-        <p className="text-gray-500 mt-2">Pathname: {pathname}</p>
-        <p className="text-gray-500">Params: {JSON.stringify(params)}</p>
-        {error && <p className="text-red-400 mt-2">Ошибка: {error}</p>}
+
         <button
           onClick={() => router.push("/tours?all=true")}
           className="mt-4 bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
@@ -107,36 +112,21 @@ export default function TourDetailPage() {
   }
 
   const features = [
-    {
-      id: 1,
-      icon: location,
-      label: "Город",
-      value: tour.city,
-    },
+    { id: 1, icon: location, label: "Город", value: tour.city },
     {
       id: 2,
       icon: durtion,
       label: "Длительность",
       value: `${tour.duration} дней`,
     },
-    {
-      id: 3,
-      icon: priceIcon,
-      label: "Стоимость",
-      value: `${tour.price} сом`,
-    },
+    { id: 3, icon: priceIcon, label: "Стоимость", value: `${tour.price} сом` },
     {
       id: 4,
       icon: groupIcon,
       label: "Макс. людей",
       value: `${tour.maxPeople} человек`,
     },
-    {
-      id: 5,
-      icon: levelIcon,
-      label: "Уровень",
-      value: "Средний",
-    },
+    { id: 5, icon: levelIcon, label: "Уровень", value: "Средний" },
   ];
 
   return (
@@ -157,7 +147,7 @@ export default function TourDetailPage() {
             {" "}
             Туры{" "}
           </span>{" "}
-          / <span className="text-black font-semibold">{tour.name}</span>
+          /<span className="text-black font-semibold">{tour.name}</span>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10 items-start">
@@ -183,10 +173,10 @@ export default function TourDetailPage() {
 
           <div className="flex flex-col max-w-[400px] gap-6 w-full">
             <h1 className="text-3xl font-bold">{tour.name}</h1>
-            <h2>{tour.description}</h2>
+            <h2 className="text-gray-600">{tour.description}</h2>
             <p className="text-gray-700">Город: {tour.city}</p>
 
-            <motion.div className="flex items-center gap-6 bg-white shadow-md p-3 rounded-xl">
+            <motion.div className="flex items-center gap-6 bg-white shadow-md p-3 rounded-xl border border-orange-50">
               <Image src={touragent} alt="agent" width={80} height={80} />
               <div>
                 <p className="font-semibold">Master Tour</p>
@@ -203,7 +193,7 @@ export default function TourDetailPage() {
           {features.map((item) => (
             <div
               key={item.id}
-              className="flex items-center gap-5 p-3 rounded-xl bg-white flex-1 min-w-[200px]"
+              className="flex items-center gap-5 p-3 rounded-xl bg-white flex-1 min-w-[200px] shadow-sm"
             >
               <Image src={item.icon} alt="icon" width={45} height={42} />
               <div>
@@ -214,34 +204,59 @@ export default function TourDetailPage() {
           ))}
         </div>
 
-        {tour.program && (
-          <div className="mt-16">
-            <h1 className="text-2xl text-center font-bold">Программа тура</h1>
-            <div className="max-w-3xl mx-auto mt-8 flex flex-col gap-4">
-              {tour.program.map((el, index) => (
-                <div key={index} className="border rounded-xl bg-white">
+        <div className="mt-16 pb-20">
+          <h2 className="text-2xl text-center font-bold mb-8">
+            Программа тура
+          </h2>
+          <div className="max-w-3xl mx-auto flex flex-col gap-4">
+            {program && program.length > 0 ? (
+              program.map((description, index) => (
+                <div
+                  key={index}
+                  className="border rounded-xl bg-white shadow-sm overflow-hidden"
+                >
                   <button
                     onClick={() => toggle(index)}
-                    className="w-full flex justify-between px-6 py-4"
+                    className="w-full flex justify-between items-center px-6 py-4 hover:bg-gray-50 transition-colors"
                   >
-                    <span className="font-semibold">{el.day}</span>
+                    <span className="font-semibold text-lg">
+                      День {index + 1}
+                    </span>
                     <FiPlus
-                      className={`transition-transform ${
-                        active === index ? "rotate-45" : ""
+                      className={`transition-transform duration-300 ${
+                        active === index
+                          ? "rotate-45 text-orange-500"
+                          : "text-gray-400"
                       }`}
+                      size={20}
                     />
                   </button>
-                  {active === index && (
-                    <div className="px-6 py-4 bg-gray-50">{el.description}</div>
-                  )}
+                  <AnimatePresence>
+                    {active === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="px-6 py-4 bg-gray-50 text-gray-700 border-t border-gray-100">
+                          {description}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <div className="text-center py-10 bg-white/50 rounded-xl border-2 border-dashed border-gray-200 text-gray-400 italic">
+                Программа тура скоро будет добавлена менеджером.
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
         <div
-          className="fixed left-1/2 bottom-10 transition-all"
+          className="fixed left-1/2 bottom-10 transition-all z-50"
           style={{
             transform: "translateX(-50%)",
             opacity: showButton ? 1 : 0,
@@ -250,7 +265,7 @@ export default function TourDetailPage() {
         >
           <button
             onClick={() => router.push(`/order?tour=${tour.id}`)}
-            className="px-12 py-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+            className="px-12 py-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 shadow-lg"
           >
             Забронировать
           </button>
@@ -258,4 +273,4 @@ export default function TourDetailPage() {
       </div>
     </div>
   );
-} 
+}
