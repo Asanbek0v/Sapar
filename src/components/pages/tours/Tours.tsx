@@ -5,13 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 import bgTour from "@/src/assets/img/bg-tour.svg";
-import car1 from "@/src/assets/img/car1.svg";
-import car2 from "@/src/assets/img/car2.svg";
-import car3 from "@/src/assets/img/car3.svg";
-
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-
+import car1 from "@/src/assets/img/passenger.png";
+import car2 from "@/src/assets/img/suv.png";
+import car3 from "@/src/assets/img/minibus.svg";
 import PriceRange from "./PriceRange/PriceRange";
 import { getTours } from "@/src/services/tours.service";
 import { getCars } from "@/src/services/cars.service";
@@ -113,9 +109,10 @@ export default function TourPage({ categoryTitle }: TourPageProps) {
     [toursWithUsdPrice, priceRange]
   );
 
-  if (loading) {
-    return <p className="text-center py-10">Загрузка...</p>;
-  }
+if (loadingTours) {
+  return <p className="text-center py-10">Загрузка...</p>;
+}
+
 
   if (tours.length === 0) {
     return (

@@ -161,9 +161,11 @@ const CarDetail = () => {
             <div className="sticky top-6">
               <div className="relative h-[400px] rounded-2xl overflow-hidden mb-4 group bg-white shadow-lg border border-gray-100">
                 <Image
-                  src={images[mainImgIndex]}
+                  src={car.images[0]}
                   alt="main car"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  width={100}
+                  height={100}
                 />
                 <div className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg flex items-center gap-2">
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>

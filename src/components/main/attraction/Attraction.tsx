@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Carousel from "../../carousel/Carousel";
-import { getTopTours } from "../../../services/tours.service";
+import {  getTours } from "../../../services/tours.service";
 import { Tour } from "../../../types/tour.interface";
 
 const Attraction = () => {
@@ -11,13 +11,13 @@ const Attraction = () => {
   const router = useRouter();
 
   useEffect(() => {
-    getTopTours().then(setTours).catch(console.error);
+     getTours().then(setTours).catch(console.error);
   }, []);
 
   const handleClick = (id: number | string) => {
     router.push(`/tours/${id}`);
   };
-
+  
   return (
     <section className="my-16">
       <div className="container">
