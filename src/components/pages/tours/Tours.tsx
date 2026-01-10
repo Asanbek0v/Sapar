@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 
 import bgTour from "@/src/assets/img/bg-tour.svg";
-import car1 from "@/src/assets/img/car1.svg";
-import car2 from "@/src/assets/img/car2.svg";
-import car3 from "@/src/assets/img/car3.svg";
-
-import { useRouter } from "next/navigation";
+import car1 from "@/src/assets/car1.png";
+import car2 from "@/src/assets/car2.png";
+import car3 from "@/src/assets/car3.png";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 import PriceRange from "./PriceRange/PriceRange";
@@ -43,16 +40,15 @@ export default function TourPage({ categoryTitle }: TourPageProps) {
 
   const [cars, setCars] = useState<Car[]>([]);
   const [loadingCars, setLoadingCars] = useState(true);
-  const [selectedCarCategory, setSelectedCarCategory] = useState<string>("passenger");
+  const [selectedCarCategory, setSelectedCarCategory] =
+    useState<string>("passenger");
 
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        // URL'ден параметрди текшерүү - /tours?all=true болсо бардыгын көрсөт
         const showAll = searchParams?.get("all") === "true";
 
         if (showAll) {
-          // Header'ден келсе localStorage'ди тазалап, бардыгын көрсөт
           localStorage.removeItem("searchResults");
           localStorage.removeItem("searchParams");
           const data = await getTours();
@@ -96,7 +92,10 @@ export default function TourPage({ categoryTitle }: TourPageProps) {
   const prices = useMemo(() => {
     if (!toursWithUsdPrice.length) return { min: 0, max: 0 };
     const values = toursWithUsdPrice.map((t) => t.priceUsd);
-    return { min: Math.floor(Math.min(...values)), max: Math.ceil(Math.max(...values)) };
+    return {
+      min: Math.floor(Math.min(...values)),
+      max: Math.ceil(Math.max(...values)),
+    };
   }, [toursWithUsdPrice]);
 
   useEffect(() => {
@@ -113,7 +112,7 @@ export default function TourPage({ categoryTitle }: TourPageProps) {
     [toursWithUsdPrice, priceRange]
   );
 
-  if (loading) {
+  if (loadingTours) {
     return <p className="text-center py-10">Загрузка...</p>;
   }
 
