@@ -79,23 +79,14 @@ export default function Hero() {
       if (tours && tours.length > 0) {
         let filteredTours = tours;
 
+        // КАТУУ ФИЛЬТРАЦИЯ: Тандалган шаар/област ТОЛУК туура келиш керек
         if (city) {
           filteredTours = filteredTours.filter((tour: any) => {
+            // Толук так окшош болсо
             if (tour.city === city) return true;
 
-            if (tour.city.includes(city)) return true;
-
-            if (city.includes(tour.city)) return true;
-
-            const regionMap: { [key: string]: string[] } = {
-              "Иссык-Куль": ["Каракол", "Чолпон-Ата", "Иссык-Куль"],
-              Нарын: ["Нарын", "Ат-Башы"],
-              Ош: ["Ош", "Узген"],
-              Бишкек: ["Бишкек", "Кара-Балта"],
-            };
-
-            const relatedCities = regionMap[city] || [];
-            if (relatedCities.includes(tour.city)) return true;
+            // Эгерде tour.city маалымат жок болсо, false кайтарабыз
+            if (!tour.city) return false;
 
             return false;
           });
@@ -105,6 +96,7 @@ export default function Hero() {
           );
         }
 
+        // Дата фильтрациясы
         if (date && filteredTours.length > 0) {
           filteredTours = filteredTours.filter(
             (tour: any) => tour.date === date
@@ -112,6 +104,7 @@ export default function Hero() {
           console.log(`Date фильтринен кийин: ${filteredTours.length} тур`);
         }
 
+        // Бюджет фильтрациясы
         if (budget && filteredTours.length > 0) {
           filteredTours = filteredTours.filter(
             (tour: any) => tour.price <= Number(budget)

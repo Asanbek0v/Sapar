@@ -42,7 +42,7 @@ const Header: FC = () => {
 
           <nav className="hidden lg:flex gap-6 text-[16px] font-medium">
             <Link
-              href="/tours"
+              href="/tours?all=true"
               className="hover:text-orange-500 transition-colors"
             >
               Туры
@@ -128,7 +128,7 @@ const Header: FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="lg:hidden mt-3 rounded-2xl shadow-lg p-5 flex flex-col gap-4 bg-white"
           >
-            <Link href="/tours" onClick={() => setMenuOpen(false)}>
+            <Link href="/tours?all=true" onClick={() => setMenuOpen(false)}>
               Туры
             </Link>
             <Link href="/companies" onClick={() => setMenuOpen(false)}>
